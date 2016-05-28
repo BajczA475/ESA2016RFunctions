@@ -1,0 +1,832 @@
+---
+title: "Writing Functions in R"
+author: "Alex Bajcz"
+date: "May 26, 2016"
+output: html_document
+---
+
+# OVERVIEW
+This course is designed to teach the essential skills necessary to build custom functions in R. Custom functions can automate a lot of work that would otherwise have to be done by hand over and over again.  
+
+# LEARNING OBJECTIVES
+* Converse meaningfully in "R language."
+* Use functions and indexing to manipulate user-created objects.
+* Apply multiple approaches to troubleshooting faulty code.
+* Recognize situations where work could be done faster and better using a custom function.
+* Construct custom functions using common R tools, pre-existing functions and their parts, R help pages, and the internet.
+
+# WELCOME
+
+Hello all, thanks for coming to today's workshop. Let's start with introductions. My name is Alex Bajcz, and I am a soon-to-be graduate of the University of Maine, where I study plant reproductive ecology. (Others introduce themselves). We will begin with today's workshop in a few minutes, but I want to take a moment to explain how this workshop came to be. Quick show of hands--how many of you use R to run your stats? How many of you use R to make graphics? How many of you use R for anything else?  
+
+For the longest time, I used R for stats and nothing else--I didn't see why I would _want_ to use it for anything else! But then, I took a class on simulation modeling using R. I took the class hoping it would make me better at R. It definitely did that, but it also made me obsessed with simulation modeling. I want to show you my simulation model now, but before I do, I just want to say that I know this will look complicated, but don't worry--we're not going to cover anything this complicated today.  
+
+(Show model). Here it is in all its glory. As you can see, it's a couple hundred lines of code. Now, I am not showing you this to impress you. In fact, I want to do the opposite. All this simulation model is is a single custom R function, which are the things we're hoping to teach you today. Thanks to the class, and a lot of hard work afterwards, I went from not understanding what a function even _was_ to being able to write a huge one that does something very cool. I mean, this model will be a chapter in my thesis now. So, this experience really helped me realize that being able to write functions in R is a powerful skill that is virtually never taught.  
+
+But there's two other things I realized as well. First, I realized that, for as complicated as my model is, much of what my model actually _does_ is fairly simple--in an afternoon, you could probably learn the skills necessary to understand 75% of what my model does if you were taught correctly. Second, I realized I was not taught correctly! It took me 2+ years of grueling trial and error to write this model; if I had been taught differently, maybe it wouldn't have been that hard.  
+
+And that was my motivation for teaching this course. I want to teach you about functions and why they're useful. More importantly, though, I want to teach you the skills you need to write functions in the order and manner I wish I had been taught them in. If we're successful, maybe you'll be able to master in a few days or weeks what it took me years to master. And, while it's true that I hope to get you all writing custom functions by the end of this class, even if we don't quite make it that far today, the good news is that these skills I hope to teach you are not just valuable for writing functions--they're valuable for working in R in general. As such, no matter how far we get, I think you will all leave more confident, skillful R users.  
+
+# FORMAT
+
+This workshop will work as follows. For the first half, the course is primarily lecture and live-coding by me and my fellow instructors. There will be very few slides! The expectation is that you'll listen to what we say and that you will code everything we code up here along with us. For note taking, we have set up an Etherpad for the class. This is a collaborative note-taking program that we really love. You will all be taking one set of notes together in real time! We ask that you enter your name in the top-right corner of the page so we know who you are. The Etherpad also has a chat window. Feel free to dump questions into the chat as we go--one of the instructors will be monitoring the Etherpad and answering questions, and we can also stop and discuss questions. We recommend having the Etherpad up on one side of your screen and the Etherpad up in the other side, but we will also go slowly enough that you can flip back and forth.
+
+There will also be several multiple-choice questions, discussion questions, and exercises in this course. We expect everyone to participate in these. For the multiple choice questions, we will be using the sticky notes we handed out to you, so don't misplace those! We will also be using the red and green sticky notes as a guage of how exercises are going. We ask you to put the red sticky note on the back of your laptop when you are still working or you are having an issue, and then to swap to the green sticky when you're finished. We'll move on when most of the class has green stickies up.   
+
+During the course, one instructor will be a "floater." Their job will be to assist you with technical problems and to help you get caught up if you fall behind. Just raise your hand at any time to flag him/her down.   
+
+This course has five sections of varying lengths. After each, we will take a short break. Just so you know where we're headed, the five sections will cover essential vocabulary, useful built-in R functions, dissecting and modifying functions, debugging and best practices, and finally writing custom functions.   
+
+Any questions before we begin?  
+
+***
+# SECTION 1: Essential vocabulary
+
+The first skill one needs to write functions, or to use R effectively in general, is to be able to converse in the language of R. For many of us, programming terminology is cryptic. However, if we understand a few key terms, we can not only have a clearer sense of what we are trying to do, but we can also more easily get help when we're stuck because we'll know the right words to use.  
+
+Let's start by typing a few things into the R console and hitting return.  
+
+```{r eval = FALSE}
+6
+"Hi"
+44/7
+```
+
+Each time we type something into R, it returns something back to us. The thing it returns is called an **object**. In the first two cases, it returned an **object** that was exactly what we typed. In the third case, it returned the result of a math problem. Both of these results are types of **objects**. The bad thing about objects like this is that they are ephemeral--R reports them to you, but it doesn't save them in any way.  
+
+Importantly, **objects** can be **named** by typing a **name**, an `=`, and then the **object** we want to **name**. This will save the object for later use.    
+
+```{r eval = FALSE}
+important = 6 
+message = "Hi"
+math.is.hard = 44/7
+```
+
+We just **named** our **objects**. You might have noticed that these **objects** are now in your **global environment** in the top-right window. If you ever can't remember what you **named** an **object**, check there!  
+
+You'll notice that R didn't return our **objects** this time. This is because we didn't tell it to--we told it to **name** our objects, not to display them. If we type the **objects'** **names**, though, it will return them as normal.  
+
+```{r eval = FALSE}
+important
+message
+math.is.hard
+```
+
+Think of an **object** as a box (slide) that holds stuff--a number, a list of numbers, or whatever. **Naming** that **object** is like putting a name tag on that box and telling R: "When I say [name], I mean all the stuff in the box labeled [name]." This is very handy, because when we want to work with a big box of stuff, we can use the **name** of that box to save valuable time because we won't have to write out all the stuff in that box.  
+
+```{r eval = FALSE}
+important + 12
+math.is.hard * 7
+```
+
+There are some **permanent named objects** in R. For example:  
+
+```{r eval = FALSE}
+pi
+month.name
+```
+
+These are always in your **environment**, even though they aren't displayed in the upper-right. **Objects** you create and **name**, however, are just **temporary**. Every time you restart R, you will have to remake them.  
+
+Why do **objects** matter? Because **functions** you use and create are **objects** too, as are many of the pieces inside them.  
+
+There are some very basic types of **objects**. For example, an **object** that is a single value is called a **scaler**.  
+
+```{r eval = FALSE}
+scaler1 = 6
+```
+
+Our math result would also be a **scaler**:  
+
+```{r eval = FALSE}
+scaler2= 44/7
+scaler2
+```
+
+A 1-dimensional sequence of entries is called a **vector**. It's also sometimes called a *string* because the entries inside are "strung together." For example:  
+
+```{r eval = FALSE}
+LETTERS
+month.abb
+```
+
+Those are two **permanent vectors** in R. Because R can tell that the entries in those **vectors** are text, each entry is wrapped in quotes. **Objects** full of numbers won't be treated like that normally.  
+
+```{r eval = FALSE}
+c(6,7,8)
+```
+
+We'll talk more about what I just typed later. Incidentally, R treats **scalers** mostly like **vectors** that only have 1 entry in them, so the difference is minor.  
+
+A 2-dimensional set of entries is called a **matrix**. A **matrix** has rows and columns.  
+
+```{r eval = FALSE}
+matrix(1:10, 2, 5)
+```
+
+The above **matrix** has 2 rows and 5 columns. There is another common type of **object** called a *data frame* that looks a lot like a **matrix**. *Data frames* are useful when you have a lot of different kinds of data, while **matrices** are better for working with just numbers. Today's class will work just with **matrices**.  
+
+You can also make 3+ dimension objects. These are called *arrays*. For example, a 3D array can be thought of as "sheets" of matrices stacked directly on top of one another (slide). These behave a lot like **matrices**, but they're a little hard to think about, so we won't use them today either.  
+
+Let's say you have an **object** full of data and you want to get just a specific entry out of that box. Let's scroll up with the up arrow and **name** the **matrix** we made `box1.`  
+
+```{r eval = FALSE}
+box1 = matrix(1:10, 2,5)
+```
+
+What if I want to multiply just the 8th entry in `box1` by 5? To do this, we use **indexing**. **Indexing** uses the **square brackets** `[` and `]`.   
+
+```{r eval = FALSE}
+box1[8]
+```
+
+We're telling R: "Go look in `box1` and find the 8th entry and tell me what it is." It's like every entry in our box has a specially numbered cubby just for it (slide)!  
+
+**Indexing** is very useful, and there are a lot of fun **indexing** tricks R users should know. For example, we can use **indexing** to reassign a value inside of our **object**.  
+
+```{r eval = FALSE}
+box1[8] = 1000
+box1
+```
+
+We're now telling R that entry 8 should be 1000 instead of whatever it was before. We can also extract or reassign multiple values at once by using a sequence of numbers (which uses a colon).  
+
+```{r eval = FALSE}
+box1[1:4]
+```
+
+This tells R to go fetch entries 1 through 4 from our box. We'll show you how to get non-consecutive entries out of an **object** a bit later. You can also use a `-` to extract or reassign all the entries in an **object** *except* the ones you're referencing.  
+
+```{r eval = FALSE}
+box1[-4]
+```
+
+This told R to return all the entries except the fourth one. 
+
+##### THOUGHT QUESTION: 
+Take a look at the contents of `box1` again, then use **indexing** to extract the 9th entry. Is this the entry you would have thought you would be getting? How is R deciding what the 9th entry in a **matrix** is?   
+
+Answer: It's counting down the columns, not across the rows like we would read a book.   
+
+Because that can be confusing for us humans, you can **index** into **matrices** using two numbers, a row number and a column number, separated by a comma.   
+
+```{r eval = FALSE}
+box1[1,5]
+```
+
+This tells R to go get the entry in row 1, column 5, which also happens to be entry 9. If you have an *array* with many dimensions, just use a comma to separate each dimension.   
+
+##### CHECK FOR UNDERSTANDING QUESTION: (slide)
+`useful.numbers` is an **object** with two values in it, 50 and 70, in that order. *Without running any code*, decide which of the following is **true**.     
+A. `useful.numbers[-2]` will return no values.  
+B. `useful.numbers[1,2]` will return 70.  
+C. After running the code `cool = useful.numbers * 5`, the **object** `cool` will be a **scaler**.  
+D. After running the code `useful.numbers[-2] = 70`, the sum of entries in `useful.numbers` will be 140.  
+E. After running the code `useful.numbers = 100`, `useful.numbers[2]` will return 100.  
+
+Answer: D. A would return the first value, 50. B would return an error because there aren't two dimensions in `useful.objects.` C would multiply both numbers in `useful.numbers` by 5, so the result would also be a vector of 2 numbers. E will return an error because, after running that code, `useful.numbers` would contain only one entry.   
+
+Now that we understand what an **object** is, it's time to consider what a **function** is. A function is a special type of **object** that performs *operations* on *input* to produce *output*. It is an **object** that does work. `matrix` and `c` are **functions** that we've seen so far.  
+
+To use a **function**, we write what's called a **function call**. It's like the **function** is a buddy we're calling up and asking to do some work for us (slide). A **call** has three parts--the **name** of the **function**, parentheses after that **name**, and then input inside those parentheses we want the **function** to operate on. Consider the **object** `useful.numbers`. We can create this **object** using the `c` function.
+
+```{r eval = FALSE}
+useful.numbers = c(50,70)
+```
+
+The right side of the above line is a **call** to the `c` **function**, and the numbers we want it to combine are put inside the parentheses. We then can **call** other **functions** to learn more about the values in this **object**.  
+
+```{r eval = FALSE}
+mean(useful.numbers)
+min(useful.numbers)
+max(useful.numbers)
+```
+
+We now know the smallest and largest values inside `useful.numbers` as well as the mean of all the values inside it.
+
+**Calls** to **functions** can be **named**. Just as with math operations, what you're really **naming** when you do this is the *output* from that **function call**.  
+
+```{r eval = FALSE}
+my.mean = mean(useful.numbers)
+my.mean
+```
+
+In order to generate meaningful output, **function** have to be given meaningful input.   
+
+```{r eval = FALSE}
+mean()
+```
+
+This line produced an error because how is `mean` supposed to know what values you want to average if you don't "feed" it any numbers? It turns out that **functions** also sometimes need specific *types* of input in order to work correctly.  
+
+```{r eval = FALSE}
+vector1 = c(3, 4, 10, NA, 20)
+mean(vector1)
+```
+
+##### THOUGHT EXERCISE: 
+Was this the result you might have wanted `mean` to return for you? Do you think this was the result `mean` *intended* to give you? What did `mean` do?  
+
+This may not have been what you wanted `mean` to do, but it is what `mean` intended to do. You asked it to the compute the mean of a set of values, one of which is an NA. It doesn't know what the mean of NA should be, but it also thinks you might want to know that there is an NA value in your data, so that is what it reports to you.   
+
+```{r eval = FALSE}
+mean(vector1, na.rm=TRUE)
+```
+
+Now, we have told `mean` to remove NA values before it takes the mean, and we get the result we probably expected.  
+
+**Functions** aren't humans--they are built to operate on input that looks a specific way and can't work with just any form of data. `mean` can't take the mean of a string of letters, for example. So, to control, interpret, and work correctly with the input it's being given, each **function** has a set of **arguments**. **Arguments** are **named objects**, and you can think of them like labeled input trays on a clerk's desk that denote which input should be put where (slide). When we **call** our **function**, we put input in each cubby and seperate the cubbies with commas. In our **call** to `mean`, the first cubby held the values we want to average, and the second cubby held some instructions about what to do if there are NA values--in our case, "yes, remove them."  
+
+To see the **arguments** of a **function**, type `?function`.  
+
+```{r eval = FALSE}
+?mean(). 
+```
+
+Under the "Usage and arguments"" headings, we see that `mean` has three main **arguments**: `x`, `trim`, and `na.rm`, with `x` being our cubby for values to be averaged. You see that `trim` and `na.rm` have `=` signs after them, followed by values, while `x` does not. What do you think these values represent? They are *defaults values* for these **arguments**. If `mean` isn't told otherwise, it assumes that you *don't* want to remove NA values, for example. What does it mean that `x` doesn't have a default value? `mean` can't even guess what numbers are supposed to be averaged if none are given, so an `x` *must* be given for `mean` to work. We saw this earlier when we got an error.  
+
+Earlier, when we called `mean` to average `vector1`, I told `mean` that `TRUE` was meant to be for the `na.rm` **argument**, but I didn't do that for the `x` **argument**. Discuss briefly with your table why you think it was necessary to do that for the `na.rm` **argument**. Hint: Try this.  
+
+```{r eval = FALSE}
+mean(vector1, TRUE)
+```
+
+The answer is that **functions** "assume each unit of input is in the *same order and spot* as the **arguments** it has. We gave `mean` *two* inputs, but it has **three arguments**. If we didn't tell `mean` that the `TRUE` was meant for the *third* **argument**, `na.rm`, it'll assume it was meant for the *second* **argument**, `trim`. `TRUE` doesn't make sense for `trim` because it deals with numbers, so we get an error.  
+
+As such, it's good practice to identify your inputs in your **function calls** unless you're sure you're putting them in the right **argument** slots. An advantage of this practice is that we can give inputs in any order if we idetify our inputs:  
+
+```{r eval = FALSE}
+mean(trim=0.1, na.rm=TRUE, x=vector1)
+```
+
+`mean` understood what we were trying to do, and it put everything in the right cubby for us.  
+
+The last bit of terminology to introduce before we move on is *seperators*. Seperators tells R when certain things begin and end and, by extension, how to proceed. Four very important seperators are *commas*, *square brackets* `[` and `]`, *parentheses* `(` and `)`, and *braces* `{` and `}`. We've seen three of these already, and you'll hopefully notice that they seperate different kinds of things--commas seperate inputs in **function calls** and dimensions in **indexing**, parentheses wrap around **function calls**, and they are also used in math problems. Brackets are used for **indexing**. We'll talk about braces later. Bottom line: These are *not* interchangable in R! Know and appreciate the differences between them. 
+
+
+##### CHECK FOR UNDERSTANDING QUESTION:
+If the following line of code was run:
+```{r eval = FALSE}
+vector2 = c(NA, 5, 25, 6, NA, 20)
+```
+Which of the following lines of code *will* return an **error**?  (slide)  
+A. `mean(0)`  
+B. `mean(vector2, 0)`  
+C. `mean(vector2[1:5})`  
+D. `mean(vector2[2:4], na.rm=TRUE)`  
+E. `mean(vector2[-c(1,5)])`  
+
+Answer: C. Taking the mean of 0 is uninformative but it is allowed, B will return NA, not an error, D is redundant but allowed, and E basically just does the work of `na.rm` manually. C, however, has a typo--a brace is used instead of a bracket.  
+
+***
+# SECTION 2: Useful **permanent** R **functions**. 
+
+Now that we know how **functions** work, I want to familiarize you with some super useful **functions** that are already built in R. These are useful for automating tasks, and they are also useful for building **functions**, as we'll see.  
+
+Some of these **functions** are fairly straightforward, so they probably don't need a real formal introduction. However, they are definitely still useful. These are `sum`, `min`, `max`, `range`, and `mean`. Take a moment to run each of these on `vector2`. What does each report?  
+
+```{r eval = FALSE}
+sum(vector2)
+min(vector2)
+max(vector2)
+range(vector2)
+mean(vector2)
+```
+
+Did you get a lot of NAs? Did you confirm your suspicions that these functions have `na.rm` **arguments**?  
+
+`length()` is also a useful **function**. It tells you how many entries are in an **object**.  
+
+```{r eval = FALSE}
+length(vector2)
+```
+
+We've also already seen `c`. Two things thare are important to note about `c` is that it can combine most **objects** together, a **matrix** and a **vector**, for example, but the result will always be a **vector**.   
+
+```{r eval = FALSE}
+c(box1, vector2)
+```
+
+`c` is sort of special in that it kind of has an infinite number of `x` **arguments**. Each **vector**-like **object** you feed it during the **call**, seperated by a comma, is assumed to be the next thing to be tacked on to the **object** being made.  
+
+There are four other really useful "basic **functions** worth knowing, and then there are three more advanced **functions** that are really worth knowing. We'll give you a tutorial on the three harder **functions** in a bit, but as a change of pace, we want you to learn the other four **functions** as a team. These four **functions** are `matrix`, `seq`, `rep`, and `sample`. At your tables, assign 1 or 2 people to each of the four **functions**. Take a few minutes to research how your **function** works using the help page and by trying the **function** out. Then, take turns teaching your group the ins and outs of the **function** you were assigned. Include a guess about when and why your **function** is useful and any quirks about it you may have learned.  
+
+Here is a list of things to keep in mind (slide):
+* For `sample`: What's the difference between `x` and `size`? What happens is `replace` or `prob` are changed? What happens if you put a single value, like 10, in for `x`? What happens if you don't give a `size` value, even though there's no default?
+* For `matrix`: Ignore the __argument__ `dimnames`. What does `byrow` do? How do `nrow` and `ncol` interact? What happens if the data you provide is bigger or smaller than the __matrix__ you end up making?
+* For `seq`: Explain the differences between `from`, `to`, `by`, and `length.out`. Do you always have to provide all four to get the values you want?
+* For `rep`: Three __arguments__ to learn--`times`, `length.out`, and `each`. What does these do? How are they all useful?
+
+Any questions? Don't be afraid to experiment in R. You can't break anything :)  
+
+##### CHECK FOR UNDERSTAND QUESTION: (slide)
+*Without* running any code, which of the following **function calls** will produce an error (not just a warning)? Choose ALL that apply.  
+A. `sample(vector2)`  
+B. `seq(from = 5, to=-6)`  
+C. `rep("boo!", length.out=2, times=5)`  
+D. `matrix(vector2, nrow=4, ncol=2)`  
+E. `c(length(vector2), sum(box1), max(useful.numbers), "wow")`  
+
+Answer: None of the above! `sample` will just shuffle a vector if no size is given (*i.e.* size is assumed to be the same length as `x`); `seq` can go backwards or into negatives just fine; `rep` can repeat words and `length.out` trumps `times` without an error; `matrix` will warn you if you made a **matrix** that was too big for your data and it'll repeat values to fill it, but it will still do it, and `c` can combine many different types of **objects** without issue.  
+
+The next three **functions** are a bit more advanced, but they are insanely powerful tools that are absolutely worth knowing. In fact, if you learn nothing else from this workshop *except* these three **functions**, I'd consider that a success. The first two of these are `which` and `if`. These are both *logic* **functions**, which means they take as input a **logical expression** and that **expression** determines what they then do.  
+
+`which` returns the **positions** of entries within an **object** that "pass" the **expression** given. For example:  
+
+```{r eval = FALSE}
+vector3 = c(1, 5, 10, 50, 100, 1000)
+which(vector3 == 100)
+```
+
+This **call** asks `which` to tell us which spot or spots inside `vector3` holds a value equal to 100. The result is that the 5th spot does.  
+
+##### THOUGHT QUESTION: 
+Why did we need to use `==` instead of just `=`? Hint: Think about how we generally label which input goes with which **argument** in a **function call**.  
+
+We needed `==` because otherwise `which` will think we are specifying an **argument** called `vector3`, and that isn't what we're trying to do. `==` is an example of "logic punctuation." (Slide) These are the symbols you need to write your **logical expressions**. We have greater than and less than and their related forms:  
+
+```{r eval = FALSE}
+which(vector3 < 10)
+which(vector3 >= 50)
+```
+
+We also have a symbol for "is not equal to:"  
+
+```{r eval = FALSE}
+which(vector3 != 10)
+```
+
+We can even give `which` multiple **expressions** to evaluate at once using `&` for "and" and `|` for "or."   
+
+```{r eval = FALSE}
+which(vector3 < 100 & vector3 > 5)
+```
+
+This **call** returned entries for which both **expressions** we gave are true. 
+
+```{r eval = FALSE}
+which(vector3 < 100 | vector3 == 1000)
+````
+
+This one returned entries for which either **expression** is true. Note that you have to write out the whole **expression** each time after every and/or connector inside the **call**.  
+
+##### THOUGHT QUESTION:
+Importantly, `which` returns the *positions* of entries that satisfy the **expression**, not the *values* of those entries. This is a big difference! Using a single line of code, get R to return the *values* of entries inside `vector3` that are less than 50.  
+
+The trick is to **call** `which` *inside* of an index into `vector3!` 
+
+```{r eval = FALSE}
+vector3[which(vector3 < 50)]
+```
+
+R will process the `which` **call** first--an **object** of positions will be created, and then those positions will be used to extract the values from `vector3` at those positions. Cool, huh? If that makes sense to you, congratulations--you're officially at least an "intermediate" R user, because that's complex stuff!  
+
+`if` is our next **function**. `if` is a **logic function**, just like `which`, but it is also a **control function**. This means it controls how R behaves on a fundamental level as it runs. A **call** to `if` has two parts. The first part is a **logical expression**, just like `which` has. The second part is a set of *operations* `if` should do if the **logical expression** is true. The **expression** is bounded by parentheses, just as before, but the operations are seperated by braces, which marks our first exposure to them, but definitely not our last!  
+
+```{r eval = FALSE}
+value1 = 40
+if(value1 > 20) { "R, Say hi to the class!" }
+```
+
+In this case, our **expression** was true; 40 is greater than 20. As a result, `if` printed our message inside of the braces.  
+
+```{r eval = FALSE}
+if(value1 > 60) { "Thanks" }
+```
+
+This time, the **expression** wasn't true, so `if` told R to *ignore* what was in the braces. It controlled how R behaved and made it skip code R otherwise would have executed. 
+
+The **operations** can be anything, including math problems.
+
+```{r eval = FALSE}
+if(value1 > 20) { value1^2 }
+```
+
+You can have dozens of operations, or just one. It doesn't matter! But it is important to note that the **operations** will always be run in order, from top to bottom.
+
+```{r eval = FALSE}
+if(value1 > 20) {
+  value2 = value1^2
+  "Say hi"
+}
+value2
+```
+
+What if you want to do something either way, one thing if the **expression** is true and another if it's false? You can do this by pairing your `if` **call** with an `else` **call**.  
+
+```{r eval = FALSE}
+if(value1 > 20) {
+  "Yes"
+} else { "No" 
+  }
+
+value1 = 10
+
+if(value1 > 20) {
+  "Yes"
+} else { "No" 
+}
+```
+
+#####THOUGHT QUESTION:
+Why doesn't `else` need a **logical expression**? 
+
+`else` doesn't need an **expression** because either the `if` **expression** is true or it is not--there's only two options. `if` will handle things if the **expression** was true and otherwise `else` will take over.  
+
+##### THOUGHT EXERCISE: 
+How could you use `if` and `else` to handle 3 possible outcomes? Try it and see if it works!  
+
+Answer: Stack an `if`/`else` pair inside of another `if` **call**:  
+
+```{r eval = FALSE}
+if (value1 > 20) {
+  "Yes"
+} else {
+  if(value1 < 5) {
+    "No"
+  } else {
+    "Maybe?"
+  }
+}
+```
+
+#The one tricky thing with `else` is that it needs to start on the same line as the closing BRACE of the `if` **call** it is paired with. Otherwise, R gets confused about what the `else` goes with and will return an error:  
+
+```{r eval = FALSE}
+if (value1 > 20) {
+  "Yes"
+}
+else { "No" }
+```
+
+One last oddity about `if` is that it can do and/or **expressions**, just like `which`, but you have to use `&&` or `||` to make it work. There's a boring reason for this, but it's better to just remember it.  
+
+```{r eval = FALSE}
+if (value1 > 20 || value1 == 10) { "Yes" }
+```
+
+#####CHECK FOR UNDERSTANDING QUESTION: (slide)
+
+What will R return at the end of the following code when it is all run?  
+
+```{r eval = FALSE}
+vector3 = c(1, 5, 10, 50, 100, 1000)
+these = which(vector3 != 5 | vector3 <= 50)
+if(length(these) > 2) {
+  "Yes"
+} else {
+  these * 10
+}
+```
+  
+A. "Yes" because the length of these is 6.  
+B. "Yes" because the length of these is 3.  
+C.  10    50   100   500  1000 10000  
+D.  10 20 30 40 50 60  
+E.  10 30 40   
+
+Answer: A is correct. All entries in `vector3` are either not equal to 5 or are less than or equal to 50, so the length of the **object** created by the `which` **call** will be 6.  
+
+Our last useful **function** is a big one, and perhaps the single most important R **function** of all: `for`. `for` is also a **control function**, just like `if`. Also just like `if`, it has operations it performs that are set inside braces. However, the input `for` takes when you **call** it is very different, and how R behaves during a `for` **call** is different as well.  
+
+Here is the basic anatomy of a `for` **call**.  
+
+```{r eval = FALSE}
+for (variable in pool) {
+  #Operations
+}
+```
+
+`for` is our **function**, we have our input in parentheses, and we have our operations in braces. What's different about this is our input. We have two input cubbies, `variable` and `pool`, seperated by another **control function** called `in`. Here's how a `for` **call** works. It takes the first entry out of the `pool` **object** and sets the `variable` **object** equal to it. It then performs all the operations in the braces, one at a time, top to bottom. It then takes the next entry in `pool`, sets `variable` equal to it, and performs *all* the operations *again*. It continues to do this until `variable` has equaled every entry in `pool` once. This is how `for` **controls** R's behavior--it forces R to "loop"" a set of operations multiple times, which is why `for` **calls** are often called "`for` loops."   
+
+```{r eval = FALSE}
+for (variable in 1:5) {
+  print(variable)
+}
+```
+
+Here, we've made our only operation to `print` what `variable` is every time through the loop. As we can see, `variable` took the value of each entry in `pool` one at a time, which in this case was a sequence of values 1 through 5.   
+
+There are several important things to note about how for works. First, we're calling these **arguments** "variable" and "pool" for ease of explanation, but technically their real names are `var` and `seq`, but if you always use the form shown above, you never will have to identify them in a **call** because `for` will understand what you're trying to do. Second, `variable` always has to be a "name" of some kind and `pool` always has to be a vector-like **object**.   
+
+```{r eval = FALSE}
+for(2 in 1:5) {
+  print(2)
+}
+
+
+for(variable in lettuce) {
+  print(variable)
+}
+```
+
+That said, as long as you follow those two rules, the name can be whatever you want, and the `pool` can be whatever values you want also.  
+
+```{r eval = FALSE}
+for(lettuce in seq(from=4, to=-2)) {
+  print(lettuce)
+}
+```
+
+Programmers use `i` as a name, generally. You'll see that online and in help pages. However, but we don't recommend using that in your own code because it's awfully vague and so it can be more confusing then choosing a specific name. Third, your `pool` does not have to be a sequence of values or even in numerical order:   
+
+```{r eval = FALSE}
+for(lettuce in c(5, 25, -3)) {
+  print(lettuce)
+}
+```
+
+The real key is to have a `pool` whose length is equal to the number of times you want the loop to run!  
+
+One mindblowing thing we glossed over just now is that, while the `for` loop is running, an **object** by the name of whatever you called `variable` is created and can be used like any other **object** to do work *inside* the `for` loop while it's running. In our most recent example, this **object** was called "`lettuce`."  
+
+```{r eval = FALSE}
+lettuce
+```
+
+#####THOUGHT EXERCISE:
+We can take advantage of this property of the `variable` **object**. Let's demonstrate with an example:  
+
+```{r eval = FALSE}
+answers = rep(0, times=5)
+x = 3
+for (variable in 1:5) {
+answers[variable] = x * variable
+}
+answers
+```
+
+With a partner, disect what this code did, line by line. How are we taking advantage of the properties of `variable`?  
+
+As we just saw, we can use `variable` in math problems just like any other **object**, and we can also use it to help us keep track of which time through the loop we're on. This is really useful for storing data being created inside the `for` loop using **indexing**.  
+
+Hopefully, you can see how powerful `for` is for automating repetive tasks. Why do the same thing 100 times when you can **call** `for` once?  
+
+Any questions?  
+
+***
+##SECTION 3: Dissecting and modifying **functions**  
+
+In the last section, we saw how various **functions** work when they are **called**. Now, we're ready to look under the hood and see how they actually do that work. Before we do that, though, let's look at the basic anatomy of an R **function**.  
+
+```{r eval = FALSE}
+function.name = function(argument1, argument2, etc.) {
+  #Operations
+  return(output) #Optional
+}
+```
+
+Hopefully, this structure looks very familiar to you now because it looks similar to **functions** we've already discussed. Our **function** will have a **name**, some **arguments** that control what inputs it can use, some operations in braces that it will perform when **called**, and a **call** to `return` to provide us with output.  
+
+Let's look at the anatomy of an actual **function**. To do this, type a **function**'s name into the console with no ? in front of it.  
+
+```{r eval = FALSE}
+sample
+```
+
+With your table, discuss all the elements covered so far in this course that you recognize inside the guts of `sample`. Did you mention **arguments**, an `if`/`else` pair, **logical expressions**, **indexing**, and **seperators**?  
+
+With luck, all this code is no longer as scary as it once might have been for you. We want to call your attention to line 6 of this code. What seems to be happening here? Much of the work `sample` is doing is actually done by a more basic **function** called `sample.int`. `sample` is really just a modification of how `sample.int` works. This is called **wrapping**. A **function** that tweaks how another **function** works is called a **wrapper**, just like a candy wrapper goes around a candy bar (slide).  
+
+##### THOUGHT EXERCISE: 
+**Wrapping** is a good introduction to writing custom **functions**, actually. Let's modify a **function** we already know to make it behave more predictably.  
+
+```{r eval = FALSE}
+sample(c(8,8,8), size=5, replace=TRUE)
+sample(8, size=5, replace=TRUE)
+```
+
+Did the two **calls** above produce the same result? Was the second result what you expected to get? What did `sample` do differently to produce the second result?  
+
+Answer: It assumed you wanted to sample from a pool of 1 up to the number given for `x`.  
+
+Maybe this isn't what we want `sample` to do. Imagine you're running a simulation model using a `for` loop. Each time through the loop in the simulation, a **vector** gets created that stores the ID numbers of all the turtles who ate any radioactive bugs that time through the loop (slide). Each time step, you want to use `sample` to randomly select 1 turtle from that **vector** so that turtle become a Ninja turtle. What if, a few times, only one turtle actually ate a radioactive bug, so the **vector** looked like this?  
+
+```{r eval = FALSE}
+frogIDs = 56
+sample(frogIDs, size=1)
+```
+
+Why was this bad? It will usually pick a turtle it wasn't supposed to!  
+
+#####THOUGHT EXERCISE: Let's create a **wrapper** of `sample` that doesn't behave like this. We want this new **function** to behave just like `sample` if there is more than one entry in our **vector**, but differently if there is only 1 entry. Fill in the blanks in the following code.  
+
+```{r eval = FALSE}
+sample2.0 = function(x, size, replace, prob) {
+  if (_____) {
+    x
+  } else {
+    sample(x, size, replace, prob)
+  }
+}
+```
+
+Answer: `length(x == 1)`. (Run the finished code to prove it works)  
+
+```{r eval = FALSE}
+sample2.0 = function(x, size, replace, prob) {
+  if (length(x) == 1) {
+    x
+  } else {
+    sample(x, size, replace, prob)
+  }
+}
+sample2.0(50, size=1)
+```
+
+Extension: This solution works just fine when `size = 1`, but it doesn't work when `size > 1`, like it was in our first example with the 8s. Fill in the blank in the following code so that our **function** can now handle `sizes > 1`. Hint: You only need one line of code, and there's at least two different ways you accomplish it!  
+
+```{r eval = FALSE}
+sample2.1 = function(x, size, replace, prob) {
+  if (length(x) == 1) {
+    _____
+  } else {
+    sample(x, size, replace, prob)
+  }
+}
+```
+
+Answer. `rep(x, times=size)` works, as does `x[sample(1, size=size)]`.  
+
+Congratulations, you've created your own custom R **function**!  
+
+Any questions?  
+
+##### SECTION 4: Code debugging, common mistakes, and best practices.
+
+Without question, learning how to improve and fix code is just as important as learning to write it. Before we get you started on writing **functions**, this section will summarize some tips to writing better code and fixing code that doesn't work.  
+
+First, a note about the dreaded R error message--they're terrible. They are often very hard to interpret. The good news is that a large majority of R error messages are sort of R's way of saying "I either can't find or can't use that object you're referencing."  
+
+One of the most common ways this happens is because you made a typo. R can be rough for people who are prone to making typos! We recommend coding slowly, or even writing code out by hand first, because typos can be hard to spot once they're in your code.  
+
+One way to catch them is the double-click trick. If you double-click or highlight an **object name** in R Studio, it'll also highlight all the other times that **object name** is in your code (demonstrate). If **object names** that should match don't all highlight, chances are you have a typo.  
+
+R is also case-sensitive. R and r are two different characters to R.  
+
+```{r eval = FALSE}
+River = 45
+river
+```
+
+Another tricky one is O versus 0.  
+
+```{r eval = FALSE}
+NOW = 56
+N0W
+```
+
+Our first tip is to urge you to take steps to guard against typos, especially ones that you might not spot easily later on.   
+
+Our second tip is to use a consistent naming convention for **objects** thoroughout your code. For example, name all **vectors** something `.vec`, use all caps for data column names, and seperate words in **object names** with an underscore `_`. Consistency will not only help you keep better track of what you're doing, it'll also make typos and other silly mistakes less likely. So, come up with a naming convention, write it down, and stick to it!  
+
+#####THOUGHT QUESTION:
+Why would naming an **object** "`sum`" be particularly bad? Why would naming an **object** "`sum1`" be only slightly better?  
+
+`sum` is already the name of a **permanent** R **object**--the **function** `sum`, and having two **objects** by the same name makes R grouchy sometimes. `sum1` avoids that problem, but it's very undescriptive. How will you remember which sum is which when you have 100+ sums to keep track of?  
+
+The rest of our tips are more like cautionary tales of common and avoidable ways for your code to go wrong. For each of these, we'll give you a small custom **function** that, as built, doesn't work. The reason it doesn't work is because the code contains a small but easily made mistake. Each time, we'll give you a hint as to what that mistake is and/or how to find it. If you can recognize how and why code isn't working, you'll have much less trouble creating code of your own that does work!  
+
+Tip number 3: Think carefully about how and where you create **objects**. The **function** `mean2.0` is a **wrapper** of `mean` that throws out NAs automatically so that we don't need to set `na.rm` to `TRUE` every time.  
+
+```{r eval = FALSE}
+stem.vec1 = c(NA, 56, 67, 17)
+stem.vec2 = c(32, 54, NA, 21)
+NAs = which(is.na(stem.vec1)==TRUE)
+
+mean2.0 = function(vector) {
+  if (length(NAs >= 1)) {
+    vector = vector[-NAs]   
+    }
+  mean(vector) 
+}
+mean2.0(stem.vec1)
+mean2.0(stem.vec2)
+```
+
+#####THOUGHT EXERCISE: 
+With your tablemates, figure out why `mean2.0`, as written, works as intended with `stem.vec1` but NOT with `stem.vec2`. How could you fix `mean2.0` by moving and adjusting a *single* line of code to make the **function** work with *any* **vector**?  
+
+Answer: `NAs` is being made based only one `stem.vec1`, and it's made outside of the **function**. If we move it inside the **function**, to the first line of the operations, and change the code so that `NAs` is made using whatever **vector** is given during the **call** as input, the **function** will work with any **vector**.  
+
+```{r eval = FALSE}
+mean2.0 = function(vector) {
+  NAs = which(is.na(vector)==TRUE)
+  if (length(NAs >= 1)) {
+    vector = vector[-NAs]   
+  }
+  mean(vector) 
+}
+mean2.0(stem.vec1)
+mean2.0(stem.vec2)
+```
+
+Tip #4: When a **function** isn't working, try each line of the operations seperately, using some fake inputs, to see if the line produces the result you would expect.   
+
+The following **function** is a real **function** Alex wrote to help him write crosswords (seriously!). It creates an **object** filled with a number of blank spots (controlled by the `length` **argument**), chooses some number of random letters (controlled by the `num.letters `**argument**), fills some random blanks in with the random letters chosen, and then returns the result.   
+
+```{r eval = FALSE}
+words = function(length=12, num.letters=3) { 
+  answer = rep("_", times = length) 
+  choices = sample(LETTERS, size = num.letters) 
+  spots = sample(1:length, size = num.letters) 
+  answer[spots] = choices 
+  return(answer)
+}
+```
+
+When the **function** works correctly, it should produce a result like this (slide):  
+
+```{r eval = FALSE}
+words()
+[1] "J" "_" "_" "_" "_" "P" "_" "_" "_" "_" "O" "_"
+```
+
+##### THOUGHT EXERCISE: But, as written above, it doesn't. That's because we made a silly mistake in one line of this code. Find and fix this line of code so that the **function** works correctly. Start by typing the following:  
+
+```{r eval = FALSE}
+length=12
+num.letters = 3
+```
+
+Next, run each line of the operations in order, *then* look at the **object** that was created. Does it look like what you'd expect?  
+
+```{r eval = FALSE}
+answer = rep("_", times=length)
+answer
+```
+
+Answer: We've inverted the **objects** `choices` and `spots` in the second to last line of the operations. Whoops!  
+
+Tips #5 and #6: The last debugging exercise covers two tips. First, be careful not to *overwrite* **objects** when you're not trying to. Overwriting an **object** is when you create a new **object** with the same name as an older **object**.  
+
+```{r eval = FALSE}
+X1 = 8
+X1
+X1 = "Hi"
+X1
+```
+
+The old version of the **object** will be gone forever when you do this. Overwriting can be useful, but it can also be really bad! The second tip is that you can use `print` to figure out what is going on inside of a `for` loop. For example:  
+
+```{r eval = FALSE}
+vector5 = c(1, 2, 4, 8, 12)
+for (time in 1:5) {
+  vector5[time] = vector5[time] * 10
+}
+```
+
+This code multiplies each entry in `vector5` by 10, one at a time. It also overwrites `vector5` each time with a new version! So far so good. However, `for` isn't showing us its progress, so if something went wrong inside the `for` loop, we wouldn't be able to tell until we got a wacky result. Adding a `print` **call** to the operations will force `for` to tell us what an **object** of interest looks like each time through the loop.  
+
+```{r eval = FALSE}
+vector5 = c(1, 2, 4, 8, 12)
+for (time in 1:5) {
+  vector5[time] = vector5[time] * 10
+  print(vector5)
+}
+```
+
+Now, we can more easily see what `vector5` looks like as this `for` loop runs. It's hard to use the line-by-line from the last approach to diagnose problems with `for` loops, specifically, so this is a special useful trick for debugging them.   
+
+#####THOUGHT EXERCISE: 
+The following code creates a **function** that models exponential population growth (finally, some ecology!). It's longer than any code you've seen thus far, but fear not--nothing important in this **function** is new to you. To help you, we've *annotated* the code. This means we've put notes on every line to explain what the line is supposed to do. Because we start our annotations with `#`s; R knows to ignore anything that comes after the hash mark. This is tip #7, actually--annotate your code! That way, you'll never forget what a piece of code is meant to accomplish.
+
+```{r eval = FALSE}
+pop.growth = function(pop0=5, lambda=0.5, num.Gens=100) { #Let's model exponential population growth
+  pop.size = rep(NA, num.Gens+1) #pop.size will store our population sizes over time
+  pop.size[1] = pop0 #Set our starting population size (pop0) inside of pop.size vector
+  
+  for (gen in 1:num.Gens) { #For every generation...
+    current.size = pop.size[gen] #Figure out what our current pop.size is.
+    growth.factor = lambda + rnorm(1, mean=0, sd=0.2) #Put a little random noise in the growth rate (lambda) using rnorm()
+    pop.change = current.size * lambda #Calculate how many individuals are being added or lost this gen.
+    pop.size = current.size + pop.change #Add/subtract the new individuals from the old pop.size to get the new one.
+  }
+  gen.seq = seq(from=1, by=1, length(pop.size)) #Make a quick x-axis for our plot
+  print(plot(pop.size ~ gen.seq)) #Make and print a scatterplot of pop.size over time.
+  return(pop.size) #Report the pop.size vector
+}
+```
+
+When run, this **function** should produce a list of population sizes and a scatterplot showing exponential population growth (slide). But, as written, it doesn't. That's because we've made a very silly error in this **function**. With your table, go through this code to understand what each line does. Then, find the error and fix it. Hint: It *might* have something to do with overwriting objects incorrectly inside of our `for` loop!
+
+Answer: We are overwriting our `pop.size` *vector* with a *scaler* the first time through the loop. This is because we forgot to use **indexing** to store our new `pop.size` value inside of the `pop.size` *vector* like we were intending to do.  
+
+Any questions?  
+
+***
+#####SECTION 5: Writing customized **functions**
+
+You now have all the skills you need to create **functions** to automate your work and to solve complicated problems! To give you practice writing **functions** and to show you some possible uses for your new skills, we've crafted six exercises. Each of these is a **function** Alex was asked by a fellow graduate student to build to solve a real-life problem that student was having. In other words, being able to write **functions** makes you a valuable asset to everyone around you!
+
+The exercises are designed like work orders. For each, there is a text file describing what the **function** should do, what it should take as input, and what it should generate as output. We've also provided you with a list of general steps that outline what we would do to create an efficient **function** to accomplish the task. However, feel free to deviate from our suggestions! Lastly, we also provide you with some suggestions for new **permanent** R **functions** that *might* help you write the **function** more easily.  
+
+The exercises are ranked in terms of difficulty, with 1 being the easiest, in our estimation. However, we believe all of them are doable, so choose the ones you feel most interested in.  
+
+We suggest that you work with as many people as possible--coding is best when it's done collaboratively, and the more brains, the better. We will circulate and help you solve any challenges you're facing.  
+
+# WRAP-UP
+
+Thank you for participating in this workshop. We hope it was helpful. If it was, consider hiring us to teach R workshops at your institution! We're certified Software Carpenters and can teach any of the courses offered by that organization (slide). Several of us are also actively seeking faculty positions, so consider hiring us for those too. (If there's time) We would be willing to stay after to help you with any specific R challenges you are having, or you we can arrange to meet with you at a later point during the conference. We're happy to help.  
+
+We'd now like to solicit feedback from you. We will do this by doing "one up/one down." Think for a moment about things you liked about this workshop, and things you didn't like so much. We're going to go around the room and point to you, and you have to give us either an up or a down that *hasn't* already been said, so brainstorm some specific feedback that you don't think others will share :)  
