@@ -7,7 +7,7 @@
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
-<meta name="viewport" content="width=device-width, initial-scale=1">
+
 
 <meta name="author" content="Alex Bajcz" />
 
@@ -40,25 +40,7 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 
 
-
-</head>
-
-<body>
-
 <style type="text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
-img {
-  max-width:100%;
-  height: auto;
-}
 h1 {
   font-size: 34px;
 }
@@ -79,6 +61,30 @@ h5 {
 }
 h6 {
   font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type="text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -109,7 +115,8 @@ $(document).ready(function () {
 <div class="fluid-row" id="header">
 
 
-<h1 class="title">Writing Functions in R</h1>
+
+<h1 class="title toc-ignore">Writing Functions in R</h1>
 <h4 class="author"><em>Alex Bajcz</em></h4>
 <h4 class="date"><em>May 26, 2016</em></h4>
 
@@ -118,7 +125,7 @@ $(document).ready(function () {
 
 <div id="overview" class="section level1">
 <h1>OVERVIEW</h1>
-<p>This course is designed to teach the essential skills necessary to build custom functions in R. Custom functions can automate a lot of work that would otherwise have to be done by hand over and over again.</p>
+<p>This course is designed to teach the essential skills necessary to build custom functions in the R software platform. Custom functions can automate a lot of work that would otherwise have to be done by hand over and over again. Moreover, functions can be used to accomplish some pretty amazing feats, including building simulation models, running thousands of analyses in seconds, and producing publishable-quality, reproducible graphs with little additional user input.</p>
 </div>
 <div id="learning-objectives" class="section level1">
 <h1>LEARNING OBJECTIVES</h1>
@@ -132,16 +139,16 @@ $(document).ready(function () {
 </div>
 <div id="welcome" class="section level1">
 <h1>WELCOME</h1>
-<p>Hello all, thanks for coming to today’s workshop. Let’s start with introductions. My name is Alex Bajcz, and I am a soon-to-be graduate of the University of Maine, where I study plant reproductive ecology. (Others introduce themselves). We will begin with today’s workshop in a few minutes, but I want to take a moment to explain how this workshop came to be. Quick show of hands–how many of you use R to run your stats? How many of you use R to make graphics? How many of you use R for anything else?</p>
+<p>Hello all, thanks for coming to today’s workshop. Let’s start with introductions. My name is Alex Bajcz, and I am a soon-to-be Ph. D. graduate of the University of Maine, where I study plant reproductive ecology. (Others introduce themselves). We will begin today’s workshop in a few minutes, but I want to take a moment to explain how this workshop came to be. Quick show of hands–how many of you use R to run your stats? How many of you use R to make graphics? How many of you use R for anything else?</p>
 <p>For the longest time, I used R for stats and nothing else–I didn’t see why I would <em>want</em> to use it for anything else! But then, I took a class on simulation modeling using R. I took the class hoping it would make me better at R. It definitely did that, but it also made me obsessed with simulation modeling. I want to show you my simulation model now, but before I do, I just want to say that I know this will look complicated, but don’t worry–we’re not going to cover anything this complicated today.</p>
-<p>(Show model). Here it is in all its glory. As you can see, it’s a couple hundred lines of code. Now, I am not showing you this to impress you. In fact, I want to do the opposite. All this simulation model is is a single custom R function, which are the things we’re hoping to teach you today. Thanks to the class, and a lot of hard work afterwards, I went from not understanding what a function even <em>was</em> to being able to write a huge one that does something very cool. I mean, this model will be a chapter in my thesis now. So, this experience really helped me realize that being able to write functions in R is a powerful skill that is virtually never taught.</p>
+<p>(Show model). Here it is in all its glory. As you can see, it’s a couple hundred lines of code. Now, I am not showing you this to impress you. In fact, I want to do the opposite. All this simulation model is is a single custom R function, which are the things we’re hoping to teach you today. Thanks to the class, and a lot of hard work afterwards, I went from not understanding what a function even <em>was</em> to being able to write a huge one that does something very cool. I mean, this model will be a chapter in my thesis now. So, this experience really helped me realize that being able to write functions in R is a powerful skill that is, tragically, rarely taught.</p>
 <p>But there’s two other things I realized as well. First, I realized that, for as complicated as my model is, much of what my model actually <em>does</em> is fairly simple–in an afternoon, you could probably learn the skills necessary to understand 75% of what my model does if you were taught correctly. Second, I realized I was not taught correctly! It took me 2+ years of grueling trial and error to write this model; if I had been taught differently, maybe it wouldn’t have been that hard.</p>
-<p>And that was my motivation for teaching this course. I want to teach you about functions and why they’re useful. More importantly, though, I want to teach you the skills you need to write functions in the order and manner I wish I had been taught them in. If we’re successful, maybe you’ll be able to master in a few days or weeks what it took me years to master. And, while it’s true that I hope to get you all writing custom functions by the end of this class, even if we don’t quite make it that far today, the good news is that these skills I hope to teach you are not just valuable for writing functions–they’re valuable for working in R in general. As such, no matter how far we get, I think you will all leave more confident, skillful R users.</p>
+<p>And that was my motivation for designing this course. I want to teach you about functions and why they’re useful. More importantly, though, I want to teach you the skills you need to write functions in the order and manner I wish I had been taught them in. If we’re successful, maybe you’ll be able to master in a few days or weeks what it took me years to master. And, while it’s true that I hope to get you all writing custom functions by the end of this class, even if we don’t quite make it that far today, the good news is that these skills I hope to teach you are not just valuable for writing functions–they’re valuable for working in R in general. As such, no matter how far we get, I think you will all leave more confident, skillful R users.</p>
 </div>
 <div id="format" class="section level1">
 <h1>FORMAT</h1>
-<p>This workshop will work as follows. For the first half, the course is primarily lecture and live-coding by me and my fellow instructors. There will be very few slides! The expectation is that you’ll listen to what we say and that you will code everything we code up here along with us. For note taking, we have set up an Etherpad for the class. This is a collaborative note-taking program that we really love. You will all be taking one set of notes together in real time! We ask that you enter your name in the top-right corner of the page so we know who you are. The Etherpad also has a chat window. Feel free to dump questions into the chat as we go–one of the instructors will be monitoring the Etherpad and answering questions, and we can also stop and discuss questions. We recommend having the Etherpad up on one side of your screen and the Etherpad up in the other side, but we will also go slowly enough that you can flip back and forth.</p>
-<p>There will also be several multiple-choice questions, discussion questions, and exercises in this course. We expect everyone to participate in these. For the multiple choice questions, we will be using the sticky notes we handed out to you, so don’t misplace those! We will also be using the red and green sticky notes as a guage of how exercises are going. We ask you to put the red sticky note on the back of your laptop when you are still working or you are having an issue, and then to swap to the green sticky when you’re finished. We’ll move on when most of the class has green stickies up.</p>
+<p>This workshop will work as follows. For the first half, the course is primarily lecture and live-coding by me and my fellow instructors. There will be very few slides! The expectation is that you’ll listen to what we say and that you will code everything we code up here along with us. For note taking, we have set up an Etherpad for the class. This is a collaborative note-taking program that we really love. You will all be taking one set of notes together in real time! We ask that you enter your name in the top-right corner of the page so we know who you are. The Etherpad also has a chat window. Feel free to dump questions into the chat as we go–one of the instructors will be monitoring the Etherpad and answering questions, and we can also stop and discuss questions. We recommend having the Etherpad up on one side of your screen and the R window up in the other side, but we will also go slowly enough that you can flip back and forth.</p>
+<p>There will also be several multiple-choice questions, discussion questions, and exercises in this course. We expect everyone to participate in these. We will also be using the red and green sticky notes as a guage of how exercises are going. We ask you to put the red sticky note on the back of your laptop when you are still working or you are having an issue, and then to swap to the green sticky when you’re finished. We’ll move on when most of the class has green stickies up.</p>
 <p>During the course, one instructor will be a “floater.” Their job will be to assist you with technical problems and to help you get caught up if you fall behind. Just raise your hand at any time to flag him/her down.</p>
 <p>This course has five sections of varying lengths. After each, we will take a short break. Just so you know where we’re headed, the five sections will cover essential vocabulary, useful built-in R functions, dissecting and modifying functions, debugging and best practices, and finally writing custom functions.</p>
 <p>Any questions before we begin?</p>
@@ -154,13 +161,14 @@ $(document).ready(function () {
 <pre class="r"><code>6
 &quot;Hi&quot;
 44/7</code></pre>
-<p>Each time we type something into R, it returns something back to us. The thing it returns is called an <strong>object</strong>. In the first two cases, it returned an <strong>object</strong> that was exactly what we typed. In the third case, it returned the result of a math problem. Both of these results are types of <strong>objects</strong>. The bad thing about objects like this is that they are ephemeral–R reports them to you, but it doesn’t save them in any way.</p>
+<p>Each time we type something into R, it returns something back to us. The thing it returns is called an <strong>object</strong>. In the first two cases, it returned an <strong>object</strong> that was exactly what we typed. In the third case, it returned the result of a math problem. Both of these results are types of <strong>objects</strong>. The bad thing about objects like this is that they are ephemeral–R reports them to you, but it doesn’t save them in any way by default.</p>
 <p>Importantly, <strong>objects</strong> can be <strong>named</strong> by typing a <strong>name</strong>, an <code>=</code>, and then the <strong>object</strong> we want to <strong>name</strong>. This will save the object for later use.</p>
 <pre class="r"><code>important = 6 
 message = &quot;Hi&quot;
 math.is.hard = 44/7</code></pre>
 <p>We just <strong>named</strong> our <strong>objects</strong>. You might have noticed that these <strong>objects</strong> are now in your <strong>global environment</strong> in the top-right window. If you ever can’t remember what you <strong>named</strong> an <strong>object</strong>, check there!</p>
-<p>You’ll notice that R didn’t return our <strong>objects</strong> this time. This is because we didn’t tell it to–we told it to <strong>name</strong> our objects, not to display them. If we type the <strong>objects’</strong> <strong>names</strong>, though, it will return them as normal.</p>
+<p>You’ll notice I used an equals sign, <code>=</code>, to name these objects. Some of you were probably taught to do this with an “arrow” symbol, <code>&lt;-</code>. I prefer using the equals sign because it’s one fewer keystroke, but you should recognize that they accomplish the same thing and you should use the one you are more comfortable using.</p>
+<p>You’ll also notice that R didn’t return our <strong>objects</strong> this time. This is because we didn’t tell it to–we told it to <strong>name</strong> our objects, not to display them. If we type the <strong>objects’</strong> <strong>names</strong>, though, it will return them as normal.</p>
 <pre class="r"><code>important
 message
 math.is.hard</code></pre>
@@ -170,7 +178,7 @@ math.is.hard * 7</code></pre>
 <p>There are some <strong>permanent named objects</strong> in R. For example:</p>
 <pre class="r"><code>pi
 month.name</code></pre>
-<p>These are always in your <strong>environment</strong>, even though they aren’t displayed in the upper-right. <strong>Objects</strong> you create and <strong>name</strong>, however, are just <strong>temporary</strong>. Every time you restart R, you will have to remake them.</p>
+<p>These are always in your <strong>environment</strong>, even though they aren’t displayed in the upper-right window. <strong>Objects</strong> you create and <strong>name</strong>, however, are just <strong>temporary</strong>. Every time you restart R, you will have to remake them.</p>
 <p>Why do <strong>objects</strong> matter? Because <strong>functions</strong> you use and create are <strong>objects</strong> too, as are many of the pieces inside them.</p>
 <p>There are some very basic types of <strong>objects</strong>. For example, an <strong>object</strong> that is a single value is called a <strong>scaler</strong>.</p>
 <pre class="r"><code>scaler1 = 6</code></pre>
@@ -180,14 +188,14 @@ scaler2</code></pre>
 <p>A 1-dimensional sequence of entries is called a <strong>vector</strong>. It’s also sometimes called a <em>string</em> because the entries inside are “strung together.” For example:</p>
 <pre class="r"><code>LETTERS
 month.abb</code></pre>
-<p>Those are two <strong>permanent vectors</strong> in R. Because R can tell that the entries in those <strong>vectors</strong> are text, each entry is wrapped in quotes. <strong>Objects</strong> full of numbers won’t be treated like that normally.</p>
+<p>Those are two <strong>permanent vectors</strong> in R. Because R can tell that the entries in those <strong>vectors</strong> are text instead of numbers, each entry is wrapped in quotes. <strong>Objects</strong> full of numbers won’t be treated like that normally.</p>
 <pre class="r"><code>c(6,7,8)</code></pre>
 <p>We’ll talk more about what I just typed later. Incidentally, R treats <strong>scalers</strong> mostly like <strong>vectors</strong> that only have 1 entry in them, so the difference is minor.</p>
 <p>A 2-dimensional set of entries is called a <strong>matrix</strong>. A <strong>matrix</strong> has rows and columns.</p>
 <pre class="r"><code>matrix(1:10, 2, 5)</code></pre>
 <p>The above <strong>matrix</strong> has 2 rows and 5 columns. There is another common type of <strong>object</strong> called a <em>data frame</em> that looks a lot like a <strong>matrix</strong>. <em>Data frames</em> are useful when you have a lot of different kinds of data, while <strong>matrices</strong> are better for working with just numbers. Today’s class will work just with <strong>matrices</strong>.</p>
-<p>You can also make 3+ dimension objects. These are called <em>arrays</em>. For example, a 3D array can be thought of as “sheets” of matrices stacked directly on top of one another (slide). These behave a lot like <strong>matrices</strong>, but they’re a little hard to think about, so we won’t use them today either.</p>
-<p>Let’s say you have an <strong>object</strong> full of data and you want to get just a specific entry out of that box. Let’s scroll up with the up arrow and <strong>name</strong> the <strong>matrix</strong> we made <code>box1.</code></p>
+<p>You can also make <strong>objects</strong> with three or more dimensions. These are called <em>arrays</em>. For example, a 3D array can be thought of as “sheets” of matrices stacked directly on top of one another (slide). These behave a lot like <strong>matrices</strong>, but they’re a little hard to think about, so we won’t use them today either.</p>
+<p>Let’s say you have an <strong>object</strong> full of data and you want to get just a specific entry out of it. Let’s scroll up with the up arrow and <strong>name</strong> the <strong>matrix</strong> we made <code>box1.</code></p>
 <pre class="r"><code>box1 = matrix(1:10, 2,5)</code></pre>
 <p>What if I want to multiply just the 8th entry in <code>box1</code> by 5? To do this, we use <strong>indexing</strong>. <strong>Indexing</strong> uses the <strong>square brackets</strong> <code>[</code> and <code>]</code>.</p>
 <pre class="r"><code>box1[8]</code></pre>
@@ -195,14 +203,14 @@ month.abb</code></pre>
 <p><strong>Indexing</strong> is very useful, and there are a lot of fun <strong>indexing</strong> tricks R users should know. For example, we can use <strong>indexing</strong> to reassign a value inside of our <strong>object</strong>.</p>
 <pre class="r"><code>box1[8] = 1000
 box1</code></pre>
-<p>We’re now telling R that entry 8 should be 1000 instead of whatever it was before. We can also extract or reassign multiple values at once by using a sequence of numbers (which uses a colon).</p>
+<p>We’re now telling R that entry 8 should be 1000 instead of whatever it was before. We can also extract or reassign multiple values at once by using a sequence of numbers (which is done using a colon).</p>
 <pre class="r"><code>box1[1:4]</code></pre>
-<p>This tells R to go fetch entries 1 through 4 from our box. We’ll show you how to get non-consecutive entries out of an <strong>object</strong> a bit later. You can also use a <code>-</code> to extract or reassign all the entries in an <strong>object</strong> <em>except</em> the ones you’re referencing.</p>
+<p>This tells R to go fetch entries 1 through 4 from our box. We’ll show you how to get non-consecutive entries out of an <strong>object</strong> a bit later. You can also use a <code>-</code> to extract or reassign all the entries in an <strong>object</strong> <em>except</em> the ones you’re referencing inside of the brackets.</p>
 <pre class="r"><code>box1[-4]</code></pre>
 <p>This told R to return all the entries except the fourth one.</p>
 <div id="thought-question" class="section level5">
 <h5>THOUGHT QUESTION:</h5>
-<p>Take a look at the contents of <code>box1</code> again, then use <strong>indexing</strong> to extract the 9th entry. Is this the entry you would have thought you would be getting? How is R deciding what the 9th entry in a <strong>matrix</strong> is?</p>
+<p>Take a look at the contents of <code>box1</code> again, then use <strong>indexing</strong> to extract the 9th entry. Is this the entry you would have thought you would be getting? That is, how is R deciding what the 9th entry in a <strong>matrix</strong> is?</p>
 <p>Answer: It’s counting down the columns, not across the rows like we would read a book.</p>
 <p>Because that can be confusing for us humans, you can <strong>index</strong> into <strong>matrices</strong> using two numbers, a row number and a column number, separated by a comma.</p>
 <pre class="r"><code>box1[1,5]</code></pre>
@@ -220,7 +228,7 @@ E. After running the code <code>useful.numbers = 100</code>, <code>useful.number
 <p>Now that we understand what an <strong>object</strong> is, it’s time to consider what a <strong>function</strong> is. A function is a special type of <strong>object</strong> that performs <em>operations</em> on <em>input</em> to produce <em>output</em>. It is an <strong>object</strong> that does work. <code>matrix</code> and <code>c</code> are <strong>functions</strong> that we’ve seen so far.</p>
 <p>To use a <strong>function</strong>, we write what’s called a <strong>function call</strong>. It’s like the <strong>function</strong> is a buddy we’re calling up and asking to do some work for us (slide). A <strong>call</strong> has three parts–the <strong>name</strong> of the <strong>function</strong>, parentheses after that <strong>name</strong>, and then input inside those parentheses we want the <strong>function</strong> to operate on. Consider the <strong>object</strong> <code>useful.numbers</code>. We can create this <strong>object</strong> using the <code>c</code> function.</p>
 <pre class="r"><code>useful.numbers = c(50,70)</code></pre>
-<p>The right side of the above line is a <strong>call</strong> to the <code>c</code> <strong>function</strong>, and the numbers we want it to combine are put inside the parentheses. We then can <strong>call</strong> other <strong>functions</strong> to learn more about the values in this <strong>object</strong>.</p>
+<p>The right side of the above line is a <strong>call</strong> to the <code>c</code> <strong>function</strong>, and the numbers we want it to combine are put inside the parentheses and seperatated by commas. We then can <strong>call</strong> other <strong>functions</strong> to learn more about the values in this <strong>object</strong>.</p>
 <pre class="r"><code>mean(useful.numbers)
 min(useful.numbers)
 max(useful.numbers)</code></pre>
@@ -228,48 +236,51 @@ max(useful.numbers)</code></pre>
 <p><strong>Calls</strong> to <strong>functions</strong> can be <strong>named</strong>. Just as with math operations, what you’re really <strong>naming</strong> when you do this is the <em>output</em> from that <strong>function call</strong>.</p>
 <pre class="r"><code>my.mean = mean(useful.numbers)
 my.mean</code></pre>
-<p>In order to generate meaningful output, <strong>function</strong> have to be given meaningful input.</p>
+<p>In order to generate meaningful output, <strong>functions</strong> have to be given meaningful input.</p>
 <pre class="r"><code>mean()</code></pre>
-<p>This line produced an error because how is <code>mean</code> supposed to know what values you want to average if you don’t “feed” it any numbers? It turns out that <strong>functions</strong> also sometimes need specific <em>types</em> of input in order to work correctly.</p>
+<p>Predictably, this line produced an error–how is <code>mean</code> supposed to know what values you want to average if you don’t “feed” it any numbers? It turns out that <strong>functions</strong> also sometimes need specific <em>types</em> of input in order to work as we intend.</p>
 <pre class="r"><code>vector1 = c(3, 4, 10, NA, 20)
 mean(vector1)</code></pre>
 </div>
 <div id="thought-exercise" class="section level5">
 <h5>THOUGHT EXERCISE:</h5>
 <p>Was this the result you might have wanted <code>mean</code> to return for you? Do you think this was the result <code>mean</code> <em>intended</em> to give you? What did <code>mean</code> do?</p>
-<p>This may not have been what you wanted <code>mean</code> to do, but it is what <code>mean</code> intended to do. You asked it to the compute the mean of a set of values, one of which is an NA. It doesn’t know what the mean of NA should be, but it also thinks you might want to know that there is an NA value in your data, so that is what it reports to you.</p>
+<p>Answer: This may not have been what you wanted <code>mean</code> to do, but it is what <code>mean</code> intended to do. You asked it to the compute the mean of a set of values, one of which is an NA. It doesn’t know what the mean of NA should be, but it also thinks you might want to know that there is an NA value in your data, so that is what it reports to you.</p>
 <pre class="r"><code>mean(vector1, na.rm=TRUE)</code></pre>
-<p>Now, we have told <code>mean</code> to remove NA values before it takes the mean, and we get the result we probably expected.</p>
-<p><strong>Functions</strong> aren’t humans–they are built to operate on input that looks a specific way and can’t work with just any form of data. <code>mean</code> can’t take the mean of a string of letters, for example. So, to control, interpret, and work correctly with the input it’s being given, each <strong>function</strong> has a set of <strong>arguments</strong>. <strong>Arguments</strong> are <strong>named objects</strong>, and you can think of them like labeled input trays on a clerk’s desk that denote which input should be put where (slide). When we <strong>call</strong> our <strong>function</strong>, we put input in each cubby and seperate the cubbies with commas. In our <strong>call</strong> to <code>mean</code>, the first cubby held the values we want to average, and the second cubby held some instructions about what to do if there are NA values–in our case, “yes, remove them.”</p>
+<p>Now, in this code, we have told <code>mean</code> to remove NA values <em>before</em> it takes the mean, and we get the result we probably expected.</p>
+<p><strong>Functions</strong> aren’t humans–they are built to operate on input that looks a specific way and can’t work with just any form of data. <code>mean</code> can’t take the mean of a string of letters, for example. So, to control, interpret, and work correctly with the input it’s given, each <strong>function</strong> has a set of <strong>arguments</strong>. <strong>Arguments</strong> are <strong>named objects</strong>, and you can think of them like labeled input trays on a clerk’s desk that denote which input should be put where. When we <strong>call</strong> our <strong>function</strong>, we put input in each cubby and seperate the cubbies with commas. In our <strong>call</strong> to <code>mean</code>, the first cubby held the values we want to average, and the second cubby held some instructions about what to do if there are NA values–in our case, “yes, remove them.”</p>
 <p>To see the <strong>arguments</strong> of a <strong>function</strong>, type <code>?function</code>.</p>
-<pre class="r"><code>?mean(). </code></pre>
-<p>Under the “Usage and arguments”&quot; headings, we see that <code>mean</code> has three main <strong>arguments</strong>: <code>x</code>, <code>trim</code>, and <code>na.rm</code>, with <code>x</code> being our cubby for values to be averaged. You see that <code>trim</code> and <code>na.rm</code> have <code>=</code> signs after them, followed by values, while <code>x</code> does not. What do you think these values represent? They are <em>defaults values</em> for these <strong>arguments</strong>. If <code>mean</code> isn’t told otherwise, it assumes that you <em>don’t</em> want to remove NA values, for example. What does it mean that <code>x</code> doesn’t have a default value? <code>mean</code> can’t even guess what numbers are supposed to be averaged if none are given, so an <code>x</code> <em>must</em> be given for <code>mean</code> to work. We saw this earlier when we got an error.</p>
+<pre class="r"><code>?mean() </code></pre>
+<p>Under the “Usage” and “Arguments” headings, we see that <code>mean</code> has three main <strong>arguments</strong>: <code>x</code>, <code>trim</code>, and <code>na.rm</code>, with <code>x</code> being our cubby for values to be averaged. You see that <code>trim</code> and <code>na.rm</code> have <code>=</code> signs after them, followed by values, while <code>x</code> does not. What do you think these values after the equals signs represent? They are <em>defaults values</em> for these <strong>arguments</strong>. If <code>mean</code> isn’t told otherwise, it assumes that you <em>don’t</em> want to remove NA values, for example. What does it mean that <code>x</code> doesn’t have a default value? <code>mean</code> can’t even guess what numbers are supposed to be averaged if none are given, so an <code>x</code> <em>must</em> be given for <code>mean</code> to work. We saw this earlier.</p>
+</div>
+<div id="thought-exercise-1" class="section level5">
+<h5>THOUGHT EXERCISE:</h5>
 <p>Earlier, when we called <code>mean</code> to average <code>vector1</code>, I told <code>mean</code> that <code>TRUE</code> was meant to be for the <code>na.rm</code> <strong>argument</strong>, but I didn’t do that for the <code>x</code> <strong>argument</strong>. Discuss briefly with your table why you think it was necessary to do that for the <code>na.rm</code> <strong>argument</strong>. Hint: Try this.</p>
 <pre class="r"><code>mean(vector1, TRUE)</code></pre>
-<p>The answer is that <strong>functions</strong> “assume each unit of input is in the <em>same order and spot</em> as the <strong>arguments</strong> it has. We gave <code>mean</code> <em>two</em> inputs, but it has <strong>three arguments</strong>. If we didn’t tell <code>mean</code> that the <code>TRUE</code> was meant for the <em>third</em> <strong>argument</strong>, <code>na.rm</code>, it’ll assume it was meant for the <em>second</em> <strong>argument</strong>, <code>trim</code>. <code>TRUE</code> doesn’t make sense for <code>trim</code> because it deals with numbers, so we get an error.</p>
-<p>As such, it’s good practice to identify your inputs in your <strong>function calls</strong> unless you’re sure you’re putting them in the right <strong>argument</strong> slots. An advantage of this practice is that we can give inputs in any order if we idetify our inputs:</p>
+<p>The answer is that <strong>functions</strong> assume each unit of input is in the <em>same order and spot</em> as the <strong>arguments</strong> it has. We gave <code>mean</code> <em>two</em> inputs when we <strong>called</strong> it, but it has <strong>three arguments</strong>, and <code>na.rm</code> is the third one, not the second one.. If we didn’t tell <code>mean</code> that the <code>TRUE</code> was meant for the <em>third</em> <strong>argument</strong>, <code>na.rm</code>, it’ll assume it was meant for the <em>second</em> <strong>argument</strong>, <code>trim</code>. <code>TRUE</code> doesn’t make sense for <code>trim</code> because it deals with numbers, so <code>mean</code> returns an error when we do that.</p>
+<p>As such, it’s good practice to identify your inputs in your <strong>function calls</strong> unless you’re sure you’re putting them in the right <strong>argument</strong> slots. An advantage of this practice is that we can give inputs in any order if we identify our inputs:</p>
 <pre class="r"><code>mean(trim=0.1, na.rm=TRUE, x=vector1)</code></pre>
-<p><code>mean</code> understood what we were trying to do, and it put everything in the right cubby for us.</p>
-<p>The last bit of terminology to introduce before we move on is <em>seperators</em>. Seperators tells R when certain things begin and end and, by extension, how to proceed. Four very important seperators are <em>commas</em>, <em>square brackets</em> <code>[</code> and <code>]</code>, <em>parentheses</em> <code>(</code> and <code>)</code>, and <em>braces</em> <code>{</code> and <code>}</code>. We’ve seen three of these already, and you’ll hopefully notice that they seperate different kinds of things–commas seperate inputs in <strong>function calls</strong> and dimensions in <strong>indexing</strong>, parentheses wrap around <strong>function calls</strong>, and they are also used in math problems. Brackets are used for <strong>indexing</strong>. We’ll talk about braces later. Bottom line: These are <em>not</em> interchangable in R! Know and appreciate the differences between them.</p>
+<p><code>mean</code> understood what we were trying to do, and it put everything in the right cubby for us because of that.</p>
+<p>The last bit of terminology to introduce before we move on is <em>seperators</em>. Seperators tell R when certain things begin and end and, by extension, how to proceed. Four very important seperators are <em>commas</em>, <em>square brackets</em> <code>[</code> and <code>]</code>, <em>parentheses</em> <code>(</code> and <code>)</code>, and <em>braces</em> <code>{</code> and <code>}</code>. We’ve seen three of these already, and you’ll hopefully notice that they seperate different kinds of things–commas seperate inputs in <strong>function calls</strong> and dimensions in <strong>indexing</strong>, parentheses wrap around <strong>function calls</strong>, and they are also used in math problems. Brackets are used for <strong>indexing</strong>. We’ll talk about braces later. Bottom line: These are <em>not</em> interchangable in R! Know and appreciate the differences between them.</p>
 </div>
 <div id="check-for-understanding-question" class="section level5">
 <h5>CHECK FOR UNDERSTANDING QUESTION:</h5>
 <p>If the following line of code was run:</p>
 <pre class="r"><code>vector2 = c(NA, 5, 25, 6, NA, 20)</code></pre>
-<p>Which of the following lines of code <em>will</em> return an <strong>error</strong>? (slide)<br />
+<p>Which of the following lines of code would return an error? (slide)<br />
 A. <code>mean(0)</code><br />
 B. <code>mean(vector2, 0)</code><br />
 C. <code>mean(vector2[1:5})</code><br />
 D. <code>mean(vector2[2:4], na.rm=TRUE)</code><br />
 E. <code>mean(vector2[-c(1,5)])</code></p>
-<p>Answer: C. Taking the mean of 0 is uninformative but it is allowed, B will return NA, not an error, D is redundant but allowed, and E basically just does the work of <code>na.rm</code> manually. C, however, has a typo–a brace is used instead of a bracket.</p>
+<p>Answer: C. For A, taking the mean of 0 is uninformative but it is allowed, B will return NA, not an error, D is a redundant way of removing NA values but is allowed, and E basically just does the work of <code>na.rm</code> manually as well. C, however, has a typo–a brace is used instead of a bracket.</p>
 <hr />
 </div>
 </div>
 <div id="section-2-useful-permanent-r-functions." class="section level1">
 <h1>SECTION 2: Useful <strong>permanent</strong> R <strong>functions</strong>.</h1>
-<p>Now that we know how <strong>functions</strong> work, I want to familiarize you with some super useful <strong>functions</strong> that are already built in R. These are useful for automating tasks, and they are also useful for building <strong>functions</strong>, as we’ll see.</p>
-<p>Some of these <strong>functions</strong> are fairly straightforward, so they probably don’t need a real formal introduction. However, they are definitely still useful. These are <code>sum</code>, <code>min</code>, <code>max</code>, <code>range</code>, and <code>mean</code>. Take a moment to run each of these on <code>vector2</code>. What does each report?</p>
+<p>Now that we know how <strong>functions</strong> work, I want to familiarize you with some super useful <strong>functions</strong> that are already built into R. These are useful for automating tasks, and they are also useful for building <strong>functions</strong>, as we’ll see.</p>
+<p>Some of these <strong>functions</strong> are fairly straightforward, so we won’t give them a formal introduction. However, they are definitely still useful. These are <code>sum</code>, <code>min</code>, <code>max</code>, <code>range</code>, and <code>mean</code>. Take a moment to run each of these on <code>vector2</code>. What does each report?</p>
 <pre class="r"><code>sum(vector2)
 min(vector2)
 max(vector2)
@@ -278,15 +289,16 @@ mean(vector2)</code></pre>
 <p>Did you get a lot of NAs? Did you confirm your suspicions that these functions have <code>na.rm</code> <strong>arguments</strong>?</p>
 <p><code>length()</code> is also a useful <strong>function</strong>. It tells you how many entries are in an <strong>object</strong>.</p>
 <pre class="r"><code>length(vector2)</code></pre>
-<p>We’ve also already seen <code>c</code>. Two things thare are important to note about <code>c</code> is that it can combine most <strong>objects</strong> together, a <strong>matrix</strong> and a <strong>vector</strong>, for example, but the result will always be a <strong>vector</strong>.</p>
+<p>We’ve also already seen <code>c</code>. Two things that are are important to note about <code>c</code> is that it can combine most <strong>objects</strong> together, like a <strong>matrix</strong> and a <strong>vector</strong>, for example, but the result will always be a <strong>vector</strong>.</p>
 <pre class="r"><code>c(box1, vector2)</code></pre>
-<p><code>c</code> is sort of special in that it kind of has an infinite number of <code>x</code> <strong>arguments</strong>. Each <strong>vector</strong>-like <strong>object</strong> you feed it during the <strong>call</strong>, seperated by a comma, is assumed to be the next thing to be tacked on to the <strong>object</strong> being made.</p>
-<p>There are four other really useful “basic <strong>functions</strong> worth knowing, and then there are three more advanced <strong>functions</strong> that are really worth knowing. We’ll give you a tutorial on the three harder <strong>functions</strong> in a bit, but as a change of pace, we want you to learn the other four <strong>functions</strong> as a team. These four <strong>functions</strong> are <code>matrix</code>, <code>seq</code>, <code>rep</code>, and <code>sample</code>. At your tables, assign 1 or 2 people to each of the four <strong>functions</strong>. Take a few minutes to research how your <strong>function</strong> works using the help page and by trying the <strong>function</strong> out. Then, take turns teaching your group the ins and outs of the <strong>function</strong> you were assigned. Include a guess about when and why your <strong>function</strong> is useful and any quirks about it you may have learned.</p>
-<p>Here is a list of things to keep in mind (slide): * For <code>sample</code>: What’s the difference between <code>x</code> and <code>size</code>? What happens is <code>replace</code> or <code>prob</code> are changed? What happens if you put a single value, like 10, in for <code>x</code>? What happens if you don’t give a <code>size</code> value, even though there’s no default? * For <code>matrix</code>: Ignore the <strong>argument</strong> <code>dimnames</code>. What does <code>byrow</code> do? How do <code>nrow</code> and <code>ncol</code> interact? What happens if the data you provide is bigger or smaller than the <strong>matrix</strong> you end up making? * For <code>seq</code>: Explain the differences between <code>from</code>, <code>to</code>, <code>by</code>, and <code>length.out</code>. Do you always have to provide all four to get the values you want? * For <code>rep</code>: Three <strong>arguments</strong> to learn–<code>times</code>, <code>length.out</code>, and <code>each</code>. What does these do? How are they all useful?</p>
+<p><code>c</code> is sort of special in that it kind of has an infinite number of <code>x</code> <strong>arguments</strong>. Each <strong>object</strong> you feed it during the <strong>call</strong>, seperated by a comma, is assumed to be the next thing to be tacked on to the <strong>object</strong> being made.</p>
+<p>There are four other really useful basic <strong>functions</strong> worth knowing, and then there are three more advanced <strong>functions</strong> that are really worth knowing as well. We’ll give you a tutorial on the three harder <strong>functions</strong> in a bit, but as a change of pace, we want you to learn the other four <strong>functions</strong> as a team. These four <strong>functions</strong> are <code>matrix</code>, <code>seq</code>, <code>rep</code>, and <code>sample</code>. At your tables, assign 1 or 2 people to each of the four <strong>functions</strong>. Take a few minutes to research how your <strong>function</strong> works using the help page and by trying the <strong>function</strong> out. Then, take turns teaching your group the ins and outs of the <strong>function</strong> you were assigned. Include a guess about when and why your <strong>function</strong> is useful and any quirks about it you may have learned.</p>
+<p>Here is a list of things to keep in mind (slide):<br />
+* For <code>sample</code>: What’s the difference between the <code>x</code> and <code>size</code> <strong>arguments</strong>? What happens if <code>replace</code> or <code>prob</code> are changed from their defaults? What happens if you put a single value, like 10, in for <code>x</code>? What happens if you don’t give a <code>size</code> value, even though there’s no default for that <strong>argument</strong>? * For <code>matrix</code>: Ignore the <strong>argument</strong> <code>dimnames</code>. What does <code>byrow</code> do? How do <code>nrow</code> and <code>ncol</code> interact? What happens if the data you provide is bigger or smaller than the <strong>matrix</strong> you end up making? * For <code>seq</code>: Explain the differences between <code>from</code>, <code>to</code>, <code>by</code>, and <code>length.out</code>. Do you always have to provide all four to get the values you want? * For <code>rep</code>: Three <strong>arguments</strong> to learn–<code>times</code>, <code>length.out</code>, and <code>each</code>. What do these do? How are they all useful?</p>
 <p>Any questions? Don’t be afraid to experiment in R. You can’t break anything :)</p>
 <div id="check-for-understand-question-slide" class="section level5">
 <h5>CHECK FOR UNDERSTAND QUESTION: (slide)</h5>
-<p><em>Without</em> running any code, which of the following <strong>function calls</strong> will produce an error (not just a warning)? Choose ALL that apply.<br />
+<p><em>Without running any code</em>, which of the following <strong>function calls</strong> will produce an error (not just a warning)? Choose ALL that apply.<br />
 A. <code>sample(vector2)</code><br />
 B. <code>seq(from = 5, to=-6)</code><br />
 C. <code>rep(&quot;boo!&quot;, length.out=2, times=5)</code><br />
@@ -297,26 +309,27 @@ E. <code>c(length(vector2), sum(box1), max(useful.numbers), &quot;wow&quot;)</co
 <p><code>which</code> returns the <strong>positions</strong> of entries within an <strong>object</strong> that “pass” the <strong>expression</strong> given. For example:</p>
 <pre class="r"><code>vector3 = c(1, 5, 10, 50, 100, 1000)
 which(vector3 == 100)</code></pre>
-<p>This <strong>call</strong> asks <code>which</code> to tell us which spot or spots inside <code>vector3</code> holds a value equal to 100. The result is that the 5th spot does.</p>
+<p>This <strong>call</strong> asks <code>which</code> to tell us which spot or spots inside <code>vector3</code> hold(s) (a) value equal to 100. The result is that the 5th spot does.</p>
 </div>
 <div id="thought-question-1" class="section level5">
 <h5>THOUGHT QUESTION:</h5>
 <p>Why did we need to use <code>==</code> instead of just <code>=</code>? Hint: Think about how we generally label which input goes with which <strong>argument</strong> in a <strong>function call</strong>.</p>
-<p>We needed <code>==</code> because otherwise <code>which</code> will think we are specifying an <strong>argument</strong> called <code>vector3</code>, and that isn’t what we’re trying to do. <code>==</code> is an example of “logic punctuation.” (Slide) These are the symbols you need to write your <strong>logical expressions</strong>. We have greater than and less than and their related forms:</p>
+<p>We needed <code>==</code> because otherwise <code>which</code> will think we are specifying an <strong>argument</strong> called <code>vector3</code>, and that isn’t what we’re trying to do.</p>
+<p><code>==</code> is an example of “logic punctuation.” (Slide) These are the symbols you need to write your <strong>logical expressions</strong>. We have greater than and less than and their related forms:</p>
 <pre class="r"><code>which(vector3 &lt; 10)
 which(vector3 &gt;= 50)</code></pre>
 <p>We also have a symbol for “is not equal to:”</p>
 <pre class="r"><code>which(vector3 != 10)</code></pre>
 <p>We can even give <code>which</code> multiple <strong>expressions</strong> to evaluate at once using <code>&amp;</code> for “and” and <code>|</code> for “or.”</p>
 <pre class="r"><code>which(vector3 &lt; 100 &amp; vector3 &gt; 5)</code></pre>
-<p>This <strong>call</strong> returned entries for which both <strong>expressions</strong> we gave are true.</p>
+<p>This <strong>call</strong> returned entries for which both <strong>expressions</strong> we gave were true.</p>
 <pre class="r"><code>which(vector3 &lt; 100 | vector3 == 1000)</code></pre>
-<p>This one returned entries for which either <strong>expression</strong> is true. Note that you have to write out the whole <strong>expression</strong> each time after every and/or connector inside the <strong>call</strong>.</p>
+<p>This one returned entries for which either <strong>expression</strong> was true. Note that you have to write out the whole <strong>expression</strong> each time after every and/or connector inside the <strong>call</strong>.</p>
 </div>
 <div id="thought-question-2" class="section level5">
 <h5>THOUGHT QUESTION:</h5>
 <p>Importantly, <code>which</code> returns the <em>positions</em> of entries that satisfy the <strong>expression</strong>, not the <em>values</em> of those entries. This is a big difference! Using a single line of code, get R to return the <em>values</em> of entries inside <code>vector3</code> that are less than 50.</p>
-<p>The trick is to <strong>call</strong> <code>which</code> <em>inside</em> of an index into <code>vector3!</code></p>
+<p>The trick is to <strong>call</strong> <code>which</code> <em>inside</em> of an index into <code>vector3</code>!</p>
 <pre class="r"><code>vector3[which(vector3 &lt; 50)]</code></pre>
 <p>R will process the <code>which</code> <strong>call</strong> first–an <strong>object</strong> of positions will be created, and then those positions will be used to extract the values from <code>vector3</code> at those positions. Cool, huh? If that makes sense to you, congratulations–you’re officially at least an “intermediate” R user, because that’s complex stuff!</p>
 <p><code>if</code> is our next <strong>function</strong>. <code>if</code> is a <strong>logic function</strong>, just like <code>which</code>, but it is also a <strong>control function</strong>. This means it controls how R behaves on a fundamental level as it runs. A <strong>call</strong> to <code>if</code> has two parts. The first part is a <strong>logical expression</strong>, just like <code>which</code> has. The second part is a set of <em>operations</em> <code>if</code> should do if the <strong>logical expression</strong> is true. The <strong>expression</strong> is bounded by parentheses, just as before, but the operations are seperated by braces, which marks our first exposure to them, but definitely not our last!</p>
@@ -344,14 +357,14 @@ value1 = 10
 if(value1 &gt; 20) {
   &quot;Yes&quot;
 } else { &quot;No&quot; 
-}</code></pre>
+  }</code></pre>
 </div>
 <div id="thought-question-3" class="section level5">
 <h5>THOUGHT QUESTION:</h5>
 <p>Why doesn’t <code>else</code> need a <strong>logical expression</strong>?</p>
-<p><code>else</code> doesn’t need an <strong>expression</strong> because either the <code>if</code> <strong>expression</strong> is true or it is not–there’s only two options. <code>if</code> will handle things if the <strong>expression</strong> was true and otherwise <code>else</code> will take over.</p>
+<p>Answer: <code>else</code> doesn’t need an <strong>expression</strong> because either the <code>if</code> <strong>expression</strong> is true or it is not–there’s only two options. <code>if</code> will handle things if the <strong>expression</strong> is true and otherwise <code>else</code> will take over.</p>
 </div>
-<div id="thought-exercise-1" class="section level5">
+<div id="thought-exercise-2" class="section level5">
 <h5>THOUGHT EXERCISE:</h5>
 <p>How could you use <code>if</code> and <code>else</code> to handle 3 possible outcomes? Try it and see if it works!</p>
 <p>Answer: Stack an <code>if</code>/<code>else</code> pair inside of another <code>if</code> <strong>call</strong>:</p>
@@ -364,16 +377,14 @@ if(value1 &gt; 20) {
     &quot;Maybe?&quot;
   }
 }</code></pre>
-</div>
-</div>
-<div id="the-one-tricky-thing-with-else-is-that-it-needs-to-start-on-the-same-line-as-the-closing-brace-of-the-if-call-it-is-paired-with.-otherwise-r-gets-confused-about-what-the-else-goes-with-and-will-return-an-error" class="section level1">
-<h1>The one tricky thing with <code>else</code> is that it needs to start on the same line as the closing BRACE of the <code>if</code> <strong>call</strong> it is paired with. Otherwise, R gets confused about what the <code>else</code> goes with and will return an error:</h1>
+<p>The one tricky thing with <code>else</code> is that it needs to start on the same line as the closing <em>brace</em> of the <code>if</code> <strong>call</strong> it is paired with. Otherwise, R gets confused about what the <code>else</code> goes with and will return an error:</p>
 <pre class="r"><code>if (value1 &gt; 20) {
   &quot;Yes&quot;
 }
 else { &quot;No&quot; }</code></pre>
 <p>One last oddity about <code>if</code> is that it can do and/or <strong>expressions</strong>, just like <code>which</code>, but you have to use <code>&amp;&amp;</code> or <code>||</code> to make it work. There’s a boring reason for this, but it’s better to just remember it.</p>
 <pre class="r"><code>if (value1 &gt; 20 || value1 == 10) { &quot;Yes&quot; }</code></pre>
+</div>
 <div id="check-for-understanding-question-slide-1" class="section level5">
 <h5>CHECK FOR UNDERSTANDING QUESTION: (slide)</h5>
 <p>What will R return at the end of the following code when it is all run?</p>
@@ -384,23 +395,23 @@ if(length(these) &gt; 2) {
 } else {
   these * 10
 }</code></pre>
-<p>A. “Yes” because the length of these is 6.<br />
-B. “Yes” because the length of these is 3.<br />
+<p>A. “Yes” because the length of <code>these</code> is 6.<br />
+B. “Yes” because the length of <code>these</code> is 3.<br />
 C. 10 50 100 500 1000 10000<br />
 D. 10 20 30 40 50 60<br />
 E. 10 30 40</p>
 <p>Answer: A is correct. All entries in <code>vector3</code> are either not equal to 5 or are less than or equal to 50, so the length of the <strong>object</strong> created by the <code>which</code> <strong>call</strong> will be 6.</p>
-<p>Our last useful <strong>function</strong> is a big one, and perhaps the single most important R <strong>function</strong> of all: <code>for</code>. <code>for</code> is also a <strong>control function</strong>, just like <code>if</code>. Also just like <code>if</code>, it has operations it performs that are set inside braces. However, the input <code>for</code> takes when you <strong>call</strong> it is very different, and how R behaves during a <code>for</code> <strong>call</strong> is different as well.</p>
+<p>Our last useful <strong>function</strong> is a big one, and perhaps the single most important R <strong>function</strong> of all: <code>for</code>. <code>for</code> is also a <strong>control function</strong>, just like <code>if</code>. Also just like <code>if</code>, it has operations it performs that are set inside <em>braces</em>. However, the input <code>for</code> takes when you <strong>call</strong> it is very different, and how R behaves during a <code>for</code> <strong>call</strong> is different as well.</p>
 <p>Here is the basic anatomy of a <code>for</code> <strong>call</strong>.</p>
 <pre class="r"><code>for (variable in pool) {
   #Operations
 }</code></pre>
-<p><code>for</code> is our <strong>function</strong>, we have our input in parentheses, and we have our operations in braces. What’s different about this is our input. We have two input cubbies, <code>variable</code> and <code>pool</code>, seperated by another <strong>control function</strong> called <code>in</code>. Here’s how a <code>for</code> <strong>call</strong> works. It takes the first entry out of the <code>pool</code> <strong>object</strong> and sets the <code>variable</code> <strong>object</strong> equal to it. It then performs all the operations in the braces, one at a time, top to bottom. It then takes the next entry in <code>pool</code>, sets <code>variable</code> equal to it, and performs <em>all</em> the operations <em>again</em>. It continues to do this until <code>variable</code> has equaled every entry in <code>pool</code> once. This is how <code>for</code> <strong>controls</strong> R’s behavior–it forces R to “loop”&quot; a set of operations multiple times, which is why <code>for</code> <strong>calls</strong> are often called “<code>for</code> loops.”</p>
+<p><code>for</code> is our <strong>function</strong>, we have our input in parentheses, and we have our operations in braces. What’s different about this is our input. We have two input cubbies, <code>variable</code> and <code>pool</code>, seperated by another <strong>control function</strong> called <code>in</code>. Here’s how a <code>for</code> <strong>call</strong> works. It takes the first entry out of the <code>pool</code> <strong>object</strong> and sets the <code>variable</code> <strong>object</strong> equal to it. It then performs all the operations in the braces, one at a time, top to bottom. It then takes the next entry in <code>pool</code>, sets <code>variable</code> equal to it, and performs <em>all</em> the operations <em>again</em>. It continues to do this until <code>variable</code> has equaled every entry in <code>pool</code> once. This is how <code>for</code> <strong>controls</strong> R’s behavior–it forces R to “loop” a set of operations multiple times, which is why <code>for</code> <strong>calls</strong> are often called “<code>for</code> loops.”</p>
 <pre class="r"><code>for (variable in 1:5) {
   print(variable)
 }</code></pre>
 <p>Here, we’ve made our only operation to <code>print</code> what <code>variable</code> is every time through the loop. As we can see, <code>variable</code> took the value of each entry in <code>pool</code> one at a time, which in this case was a sequence of values 1 through 5.</p>
-<p>There are several important things to note about how for works. First, we’re calling these <strong>arguments</strong> “variable” and “pool” for ease of explanation, but technically their real names are <code>var</code> and <code>seq</code>, but if you always use the form shown above, you never will have to identify them in a <strong>call</strong> because <code>for</code> will understand what you’re trying to do. Second, <code>variable</code> always has to be a “name” of some kind and <code>pool</code> always has to be a vector-like <strong>object</strong>.</p>
+<p>There are several important things to note about how <code>for</code> works. First, we’re calling these <strong>arguments</strong> “variable” and “pool” for ease of explanation, but technically their real names are <code>var</code> and <code>seq</code>, but if you always use the general form be showed you above to call <code>for</code>, you never will have to identify them in a <strong>call</strong> because <code>for</code> will understand what you’re trying to do. Second, <code>variable</code> always has to be a “name” of some kind and <code>pool</code> always has to be a vector-like <strong>object</strong>. For example, the following code breaks these rules in turn and causes errors to be returned:</p>
 <pre class="r"><code>for(2 in 1:5) {
   print(2)
 }
@@ -409,19 +420,19 @@ E. 10 30 40</p>
 for(variable in lettuce) {
   print(variable)
 }</code></pre>
-<p>That said, as long as you follow those two rules, the name can be whatever you want, and the <code>pool</code> can be whatever values you want also.</p>
+<p>That said, as long as you follow those two rules, the name of <code>variable</code> can be whatever you want, and the <code>pool</code> can be whatever values you want also.</p>
 <pre class="r"><code>for(lettuce in seq(from=4, to=-2)) {
   print(lettuce)
 }</code></pre>
-<p>Programmers use <code>i</code> as a name, generally. You’ll see that online and in help pages. However, but we don’t recommend using that in your own code because it’s awfully vague and so it can be more confusing then choosing a specific name. Third, your <code>pool</code> does not have to be a sequence of values or even in numerical order:</p>
+<p>Programmers use <code>i</code> as a name for <code>variable</code>, generally. You’ll see that online and in help pages. However, but we don’t recommend using that in your own code because it’s awfully vague and so it can be more confusing then choosing a specific name. Third, your <code>pool</code> does not have to be a sequence of values or even in numerical order:</p>
 <pre class="r"><code>for(lettuce in c(5, 25, -3)) {
   print(lettuce)
 }</code></pre>
 <p>The real key is to have a <code>pool</code> whose length is equal to the number of times you want the loop to run!</p>
-<p>One mindblowing thing we glossed over just now is that, while the <code>for</code> loop is running, an <strong>object</strong> by the name of whatever you called <code>variable</code> is created and can be used like any other <strong>object</strong> to do work <em>inside</em> the <code>for</code> loop while it’s running. In our most recent example, this <strong>object</strong> was called “<code>lettuce</code>.”</p>
+<p>One mindblowing thing we glossed over just now is that, while the <code>for</code> loop is running, an <strong>object</strong> by the name of whatever you called <code>variable</code> is created and can be used like any other <strong>object</strong> to do work <em>inside</em> the <code>for</code> loop while it’s running. In our most recent example, this <strong>object</strong> was called “<code>lettuce</code>”.</p>
 <pre class="r"><code>lettuce</code></pre>
 </div>
-<div id="thought-exercise-2" class="section level5">
+<div id="thought-exercise-3" class="section level5">
 <h5>THOUGHT EXERCISE:</h5>
 <p>We can take advantage of this property of the <code>variable</code> <strong>object</strong>. Let’s demonstrate with an example:</p>
 <pre class="r"><code>answers = rep(0, times=5)
@@ -432,32 +443,33 @@ answers[variable] = x * variable
 answers</code></pre>
 <p>With a partner, disect what this code did, line by line. How are we taking advantage of the properties of <code>variable</code>?</p>
 <p>As we just saw, we can use <code>variable</code> in math problems just like any other <strong>object</strong>, and we can also use it to help us keep track of which time through the loop we’re on. This is really useful for storing data being created inside the <code>for</code> loop using <strong>indexing</strong>.</p>
-<p>Hopefully, you can see how powerful <code>for</code> is for automating repetive tasks. Why do the same thing 100 times when you can <strong>call</strong> <code>for</code> once?</p>
+<p>Hopefully, you can see how powerful <code>for</code> is for automating repetitive tasks. Why do the same thing 100 times when you can <strong>call</strong> <code>for</code> once?</p>
 <p>Any questions?</p>
 <hr />
 </div>
-<div id="section-3-dissecting-and-modifying-functions" class="section level2">
-<h2>SECTION 3: Dissecting and modifying <strong>functions</strong></h2>
+</div>
+<div id="section-3-dissecting-and-modifying-functions" class="section level1">
+<h1>SECTION 3: Dissecting and modifying <strong>functions</strong></h1>
 <p>In the last section, we saw how various <strong>functions</strong> work when they are <strong>called</strong>. Now, we’re ready to look under the hood and see how they actually do that work. Before we do that, though, let’s look at the basic anatomy of an R <strong>function</strong>.</p>
 <pre class="r"><code>function.name = function(argument1, argument2, etc.) {
   #Operations
   return(output) #Optional
 }</code></pre>
-<p>Hopefully, this structure looks very familiar to you now because it looks similar to <strong>functions</strong> we’ve already discussed. Our <strong>function</strong> will have a <strong>name</strong>, some <strong>arguments</strong> that control what inputs it can use, some operations in braces that it will perform when <strong>called</strong>, and a <strong>call</strong> to <code>return</code> to provide us with output.</p>
+<p>Hopefully, this structure looks very familiar to you now because it looks similar to <strong>functions</strong> we’ve already discussed. Our <strong>function</strong> will have a <strong>name</strong>, some <strong>arguments</strong> that control what inputs it can deal with, some operations in braces that it will perform when <strong>called</strong>, and a <strong>call</strong> to <code>return</code> to provide us with output.</p>
 <p>Let’s look at the anatomy of an actual <strong>function</strong>. To do this, type a <strong>function</strong>’s name into the console with no ? in front of it.</p>
 <pre class="r"><code>sample</code></pre>
 <p>With your table, discuss all the elements covered so far in this course that you recognize inside the guts of <code>sample</code>. Did you mention <strong>arguments</strong>, an <code>if</code>/<code>else</code> pair, <strong>logical expressions</strong>, <strong>indexing</strong>, and <strong>seperators</strong>?</p>
 <p>With luck, all this code is no longer as scary as it once might have been for you. We want to call your attention to line 6 of this code. What seems to be happening here? Much of the work <code>sample</code> is doing is actually done by a more basic <strong>function</strong> called <code>sample.int</code>. <code>sample</code> is really just a modification of how <code>sample.int</code> works. This is called <strong>wrapping</strong>. A <strong>function</strong> that tweaks how another <strong>function</strong> works is called a <strong>wrapper</strong>, just like a candy wrapper goes around a candy bar (slide).</p>
-<div id="thought-exercise-3" class="section level5">
-<h5>THOUGHT EXERCISE:</h5>
-<p><strong>Wrapping</strong> is a good introduction to writing custom <strong>functions</strong>, actually. Let’s modify a <strong>function</strong> we already know to make it behave more predictably.</p>
+<div id="thought-question-4" class="section level5">
+<h5>THOUGHT QUESTION:</h5>
+<p><strong>Wrapping</strong> is a good introduction to writing custom <strong>functions</strong>, actually. Let’s modify a <strong>function</strong> we already know about to make it behave more predictably.</p>
 <pre class="r"><code>sample(c(8,8,8), size=5, replace=TRUE)
 sample(8, size=5, replace=TRUE)</code></pre>
 <p>Did the two <strong>calls</strong> above produce the same result? Was the second result what you expected to get? What did <code>sample</code> do differently to produce the second result?</p>
 <p>Answer: It assumed you wanted to sample from a pool of 1 up to the number given for <code>x</code>.</p>
-<p>Maybe this isn’t what we want <code>sample</code> to do. Imagine you’re running a simulation model using a <code>for</code> loop. Each time through the loop in the simulation, a <strong>vector</strong> gets created that stores the ID numbers of all the turtles who ate any radioactive bugs that time through the loop (slide). Each time step, you want to use <code>sample</code> to randomly select 1 turtle from that <strong>vector</strong> so that turtle become a Ninja turtle. What if, a few times, only one turtle actually ate a radioactive bug, so the <strong>vector</strong> looked like this?</p>
-<pre class="r"><code>frogIDs = 56
-sample(frogIDs, size=1)</code></pre>
+<p>Maybe this isn’t what we want <code>sample</code> to do. Imagine you’re running a simulation model using a <code>for</code> loop. Each time through the loop in the simulation, a <strong>vector</strong> gets created that stores the ID numbers of all the turtles who ate any radioactive bugs that time through the loop (slide). Each time step, you want to use <code>sample</code> to randomly select 1 turtle from that <strong>vector</strong> so that turtle becomes a Ninja turtle. What if, a few times, only one turtle actually ate a radioactive bug, so the <strong>vector</strong> looked like this?</p>
+<pre class="r"><code>turtleIDs = 56
+sample(turtleIDs, size=1)</code></pre>
 <p>Why was this bad? It will usually pick a turtle it wasn’t supposed to!</p>
 </div>
 <div id="thought-exercise-lets-create-a-wrapper-of-sample-that-doesnt-behave-like-this.-we-want-this-new-function-to-behave-just-like-sample-if-there-is-more-than-one-entry-in-our-vector-but-differently-if-there-is-only-1-entry.-fill-in-the-blanks-in-the-following-code." class="section level5">
@@ -478,7 +490,8 @@ sample(frogIDs, size=1)</code></pre>
   }
 }
 sample2.0(50, size=1)</code></pre>
-<p>Extension: This solution works just fine when <code>size = 1</code>, but it doesn’t work when <code>size &gt; 1</code>, like it was in our first example with the 8s. Fill in the blank in the following code so that our <strong>function</strong> can now handle <code>sizes &gt; 1</code>. Hint: You only need one line of code, and there’s at least two different ways you accomplish it!</p>
+<div id="extension-this-solution-works-just-fine-when-size-1-but-it-doesnt-work-when-size-1-like-it-was-in-our-first-example-with-the-8s.-fill-in-the-blank-in-the-following-code-so-that-our-function-can-now-handle-sizes-1.-hint-you-only-need-one-line-of-code-and-theres-at-least-two-different-ways-you-accomplish-it" class="section level6">
+<h6>Extension: This solution works just fine when <code>size = 1</code>, but it doesn’t work when <code>size &gt; 1</code>, like it was in our first example with the 8s. Fill in the blank in the following code so that our <strong>function</strong> can now handle <code>sizes &gt; 1</code>. Hint: You only need one line of code, and there’s at least two different ways you accomplish it!</h6>
 <pre class="r"><code>sample2.1 = function(x, size, replace, prob) {
   if (length(x) == 1) {
     _____
@@ -490,26 +503,27 @@ sample2.0(50, size=1)</code></pre>
 <p>Congratulations, you’ve created your own custom R <strong>function</strong>!</p>
 <p>Any questions?</p>
 </div>
-<div id="section-4-code-debugging-common-mistakes-and-best-practices." class="section level5">
-<h5>SECTION 4: Code debugging, common mistakes, and best practices.</h5>
+</div>
+</div>
+<div id="section-4-code-debugging-common-mistakes-and-best-practices." class="section level1">
+<h1>SECTION 4: Code debugging, common mistakes, and best practices.</h1>
 <p>Without question, learning how to improve and fix code is just as important as learning to write it. Before we get you started on writing <strong>functions</strong>, this section will summarize some tips to writing better code and fixing code that doesn’t work.</p>
 <p>First, a note about the dreaded R error message–they’re terrible. They are often very hard to interpret. The good news is that a large majority of R error messages are sort of R’s way of saying “I either can’t find or can’t use that object you’re referencing.”</p>
-<p>One of the most common ways this happens is because you made a typo. R can be rough for people who are prone to making typos! We recommend coding slowly, or even writing code out by hand first, because typos can be hard to spot once they’re in your code.</p>
-<p>One way to catch them is the double-click trick. If you double-click or highlight an <strong>object name</strong> in R Studio, it’ll also highlight all the other times that <strong>object name</strong> is in your code (demonstrate). If <strong>object names</strong> that should match don’t all highlight, chances are you have a typo.</p>
-<p>R is also case-sensitive. R and r are two different characters to R.</p>
-<pre class="r"><code>River = 45
-river</code></pre>
+<p>One of the most common ways this happens is because you made a typo. R can be rough for people who are prone to making typos! We recommend coding slowly, or even writing code out by hand first on paper, because typos can be hard to spot once they’re in your code.</p>
+<p>One way to catch them is the double-click trick. If you double-click or highlight an <strong>object name</strong> in R Studio, it’ll also highlight all the other times that <strong>object name</strong> is in your code (demonstrate). If <strong>object names</strong> that should match don’t all highlight, chances are you have a typo in one of them.</p>
+<p>R is also case-sensitive. L and l are two different characters to R.</p>
+<pre class="r"><code>Liver = 45
+liver</code></pre>
 <p>Another tricky one is O versus 0.</p>
 <pre class="r"><code>NOW = 56
 N0W</code></pre>
 <p>Our first tip is to urge you to take steps to guard against typos, especially ones that you might not spot easily later on.</p>
-<p>Our second tip is to use a consistent naming convention for <strong>objects</strong> thoroughout your code. For example, name all <strong>vectors</strong> something <code>.vec</code>, use all caps for data column names, and seperate words in <strong>object names</strong> with an underscore <code>_</code>. Consistency will not only help you keep better track of what you’re doing, it’ll also make typos and other silly mistakes less likely. So, come up with a naming convention, write it down, and stick to it!</p>
-</div>
-<div id="thought-question-4" class="section level5">
+<p>Our second tip is to use a consistent naming convention for <strong>objects</strong> thoroughout your code. For example, name all <strong>vectors</strong> something ending in <code>.vec</code>, use all caps for data column names, and seperate words in <strong>object names</strong> with an underscore <code>_</code>. Consistency will not only help you keep better track of what you’re doing, it’ll also make typos and other silly mistakes less likely. So, come up with a naming convention, write it down, and stick to it!</p>
+<div id="thought-question-5" class="section level5">
 <h5>THOUGHT QUESTION:</h5>
 <p>Why would naming an <strong>object</strong> “<code>sum</code>” be particularly bad? Why would naming an <strong>object</strong> “<code>sum1</code>” be only slightly better?</p>
-<p><code>sum</code> is already the name of a <strong>permanent</strong> R <strong>object</strong>–the <strong>function</strong> <code>sum</code>, and having two <strong>objects</strong> by the same name makes R grouchy sometimes. <code>sum1</code> avoids that problem, but it’s very undescriptive. How will you remember which sum is which when you have 100+ sums to keep track of?</p>
-<p>The rest of our tips are more like cautionary tales of common and avoidable ways for your code to go wrong. For each of these, we’ll give you a small custom <strong>function</strong> that, as built, doesn’t work. The reason it doesn’t work is because the code contains a small but easily made mistake. Each time, we’ll give you a hint as to what that mistake is and/or how to find it. If you can recognize how and why code isn’t working, you’ll have much less trouble creating code of your own that does work!</p>
+<p>Answer: <code>sum</code> is already the name of a <strong>permanent</strong> R <strong>object</strong>–the <strong>function</strong> <code>sum</code>, and having two <strong>objects</strong> by the same name makes R grouchy sometimes. <code>sum1</code> avoids that problem, but it’s very undescriptive. How will you remember which sum is which when you have 100+ sums to keep track of?</p>
+<p>The rest of our tips are more like cautionary tales of common and avoidable ways for your code to go wrong. For each of these, we’ll give you a small custom <strong>function</strong> that, as built, <strong>doesn’t</strong> work. The reason it doesn’t work is because the code contains a small but easily made mistake. Each time, we’ll give you a hint as to what that mistake is and/or how to find it. If you can recognize how and why code isn’t working, you’ll have much less trouble creating code of your own that does work!</p>
 <p>Tip number 3: Think carefully about how and where you create <strong>objects</strong>. The <strong>function</strong> <code>mean2.0</code> is a <strong>wrapper</strong> of <code>mean</code> that throws out NAs automatically so that we don’t need to set <code>na.rm</code> to <code>TRUE</code> every time.</p>
 <pre class="r"><code>stem.vec1 = c(NA, 56, 67, 17)
 stem.vec2 = c(32, 54, NA, 21)
@@ -527,7 +541,7 @@ mean2.0(stem.vec2)</code></pre>
 <div id="thought-exercise-4" class="section level5">
 <h5>THOUGHT EXERCISE:</h5>
 <p>With your tablemates, figure out why <code>mean2.0</code>, as written, works as intended with <code>stem.vec1</code> but NOT with <code>stem.vec2</code>. How could you fix <code>mean2.0</code> by moving and adjusting a <em>single</em> line of code to make the <strong>function</strong> work with <em>any</em> <strong>vector</strong>?</p>
-<p>Answer: <code>NAs</code> is being made based only one <code>stem.vec1</code>, and it’s made outside of the <strong>function</strong>. If we move it inside the <strong>function</strong>, to the first line of the operations, and change the code so that <code>NAs</code> is made using whatever <strong>vector</strong> is given during the <strong>call</strong> as input, the <strong>function</strong> will work with any <strong>vector</strong>.</p>
+<p>Answer: <code>NAs</code> is being made based only on <code>stem.vec1</code>, and it’s made outside of the <strong>function</strong> itself. If we move it inside the <strong>function</strong>, to the first line of the operations, and change the code so that <code>NAs</code> is made using whatever <strong>vector</strong> is given during the <strong>call</strong> as input, the <strong>function</strong> will work with any <strong>vector</strong>.</p>
 <pre class="r"><code>mean2.0 = function(vector) {
   NAs = which(is.na(vector)==TRUE)
   if (length(NAs &gt;= 1)) {
@@ -537,7 +551,7 @@ mean2.0(stem.vec2)</code></pre>
 }
 mean2.0(stem.vec1)
 mean2.0(stem.vec2)</code></pre>
-<p>Tip #4: When a <strong>function</strong> isn’t working, try each line of the operations seperately, using some fake inputs, to see if the line produces the result you would expect.</p>
+<p>Tip number 4: When a <strong>function</strong> isn’t working, try each line of the operations seperately, using some fake inputs, to see if the line produces the result you would expect.</p>
 <p>The following <strong>function</strong> is a real <strong>function</strong> Alex wrote to help him write crosswords (seriously!). It creates an <strong>object</strong> filled with a number of blank spots (controlled by the <code>length</code> <strong>argument</strong>), chooses some number of random letters (controlled by the <code>num.letters</code><strong>argument</strong>), fills some random blanks in with the random letters chosen, and then returns the result.</p>
 <pre class="r"><code>words = function(length=12, num.letters=3) { 
   answer = rep(&quot;_&quot;, times = length) 
@@ -550,15 +564,16 @@ mean2.0(stem.vec2)</code></pre>
 <pre class="r"><code>words()
 [1] &quot;J&quot; &quot;_&quot; &quot;_&quot; &quot;_&quot; &quot;_&quot; &quot;P&quot; &quot;_&quot; &quot;_&quot; &quot;_&quot; &quot;_&quot; &quot;O&quot; &quot;_&quot;</code></pre>
 </div>
-<div id="thought-exercise-but-as-written-above-it-doesnt.-thats-because-we-made-a-silly-mistake-in-one-line-of-this-code.-find-and-fix-this-line-of-code-so-that-the-function-works-correctly.-start-by-typing-the-following" class="section level5">
-<h5>THOUGHT EXERCISE: But, as written above, it doesn’t. That’s because we made a silly mistake in one line of this code. Find and fix this line of code so that the <strong>function</strong> works correctly. Start by typing the following:</h5>
+<div id="thought-exercise-but-as-written-above-it-doesnt.-thats-because-we-made-a-silly-mistake-in-one-line-of-this-code.-find-and-fix-this-line-of-code-so-that-the-function-works-correctly.-start-by-typing-the-following-into-the-r-console" class="section level5">
+<h5>THOUGHT EXERCISE: But, as written above, it doesn’t. That’s because we made a silly mistake in one line of this code. Find and fix this line of code so that the <strong>function</strong> works correctly. Start by typing the following into the R console:</h5>
 <pre class="r"><code>length=12
 num.letters = 3</code></pre>
 <p>Next, run each line of the operations in order, <em>then</em> look at the <strong>object</strong> that was created. Does it look like what you’d expect?</p>
 <pre class="r"><code>answer = rep(&quot;_&quot;, times=length)
 answer</code></pre>
+<p>this process for the other operations.</p>
 <p>Answer: We’ve inverted the <strong>objects</strong> <code>choices</code> and <code>spots</code> in the second to last line of the operations. Whoops!</p>
-<p>Tips #5 and #6: The last debugging exercise covers two tips. First, be careful not to <em>overwrite</em> <strong>objects</strong> when you’re not trying to. Overwriting an <strong>object</strong> is when you create a new <strong>object</strong> with the same name as an older <strong>object</strong>.</p>
+<p>Tips number 5 and 6: The last debugging exercise covers two tips. First, be careful not to <em>overwrite</em> <strong>objects</strong> when you’re not trying to. Overwriting an <strong>object</strong> is when you create a new <strong>object</strong> with the same name as an older <strong>object</strong>.</p>
 <pre class="r"><code>X1 = 8
 X1
 X1 = &quot;Hi&quot;
@@ -574,11 +589,11 @@ for (time in 1:5) {
   vector5[time] = vector5[time] * 10
   print(vector5)
 }</code></pre>
-<p>Now, we can more easily see what <code>vector5</code> looks like as this <code>for</code> loop runs. It’s hard to use the line-by-line from the last approach to diagnose problems with <code>for</code> loops, specifically, so this is a special useful trick for debugging them.</p>
+<p>Now, we can more easily see what <code>vector5</code> looks like as this <code>for</code> loop runs. It’s hard to use the line-by-line approach from the last exercise to diagnose problems within <code>for</code> loops, specifically, so this is a special useful trick for debugging them.</p>
 </div>
 <div id="thought-exercise-5" class="section level5">
 <h5>THOUGHT EXERCISE:</h5>
-<p>The following code creates a <strong>function</strong> that models exponential population growth (finally, some ecology!). It’s longer than any code you’ve seen thus far, but fear not–nothing important in this <strong>function</strong> is new to you. To help you, we’ve <em>annotated</em> the code. This means we’ve put notes on every line to explain what the line is supposed to do. Because we start our annotations with <code>#</code>s; R knows to ignore anything that comes after the hash mark. This is tip #7, actually–annotate your code! That way, you’ll never forget what a piece of code is meant to accomplish.</p>
+<p>The following code creates a <strong>function</strong> that models exponential population growth (finally, some ecology!). It’s longer than any code you’ve seen thus far, but fear not–nothing important in this <strong>function</strong> is new to you. To help you, we’ve <em>annotated</em> the code. This means we’ve put notes on every line to explain what the line is supposed to do. Because we start our annotations with <code>#</code>s; R knows to ignore anything that comes after the hash mark. This is tip number 7, actually–annotate your code! That way, you’ll never forget what a piece of code is meant to accomplish.</p>
 <pre class="r"><code>pop.growth = function(pop0=5, lambda=0.5, num.Gens=100) { #Let's model exponential population growth
   pop.size = rep(NA, num.Gens+1) #pop.size will store our population sizes over time
   pop.size[1] = pop0 #Set our starting population size (pop0) inside of pop.size vector
@@ -594,18 +609,17 @@ for (time in 1:5) {
   return(pop.size) #Report the pop.size vector
 }</code></pre>
 <p>When run, this <strong>function</strong> should produce a list of population sizes and a scatterplot showing exponential population growth (slide). But, as written, it doesn’t. That’s because we’ve made a very silly error in this <strong>function</strong>. With your table, go through this code to understand what each line does. Then, find the error and fix it. Hint: It <em>might</em> have something to do with overwriting objects incorrectly inside of our <code>for</code> loop!</p>
-<p>Answer: We are overwriting our <code>pop.size</code> <em>vector</em> with a <em>scaler</em> the first time through the loop. This is because we forgot to use <strong>indexing</strong> to store our new <code>pop.size</code> value inside of the <code>pop.size</code> <em>vector</em> like we were intending to do.</p>
+<p>Answer: We are overwriting our <code>pop.size</code> <strong>vector</strong> with a <strong>scaler</strong> the first time through the loop. This is because we forgot to use <strong>indexing</strong> to store our new <code>pop.size</code> value inside of the <code>pop.size</code> <strong>vector</strong> like we were intending to do.</p>
 <p>Any questions?</p>
 <hr />
 </div>
-<div id="section-5-writing-customized-functions" class="section level5">
-<h5>SECTION 5: Writing customized <strong>functions</strong></h5>
+</div>
+<div id="section-5-writing-customized-functions" class="section level1">
+<h1>SECTION 5: Writing customized <strong>functions</strong></h1>
 <p>You now have all the skills you need to create <strong>functions</strong> to automate your work and to solve complicated problems! To give you practice writing <strong>functions</strong> and to show you some possible uses for your new skills, we’ve crafted six exercises. Each of these is a <strong>function</strong> Alex was asked by a fellow graduate student to build to solve a real-life problem that student was having. In other words, being able to write <strong>functions</strong> makes you a valuable asset to everyone around you!</p>
 <p>The exercises are designed like work orders. For each, there is a text file describing what the <strong>function</strong> should do, what it should take as input, and what it should generate as output. We’ve also provided you with a list of general steps that outline what we would do to create an efficient <strong>function</strong> to accomplish the task. However, feel free to deviate from our suggestions! Lastly, we also provide you with some suggestions for new <strong>permanent</strong> R <strong>functions</strong> that <em>might</em> help you write the <strong>function</strong> more easily.</p>
-<p>The exercises are ranked in terms of difficulty, with 1 being the easiest, in our estimation. However, we believe all of them are doable, so choose the ones you feel most interested in.</p>
+<p>The exercises are ranked in terms of difficulty, with 1 being the easiest, in our estimation. However, we believe all of them are doable, so choose the ones that interest you most.</p>
 <p>We suggest that you work with as many people as possible–coding is best when it’s done collaboratively, and the more brains, the better. We will circulate and help you solve any challenges you’re facing.</p>
-</div>
-</div>
 </div>
 <div id="wrap-up" class="section level1">
 <h1>WRAP-UP</h1>
